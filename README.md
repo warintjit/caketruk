@@ -50,7 +50,7 @@ src/
 ## สถานะการพัฒนา
 
 - [x] **Phase 0** — Setup (scaffold, Tailwind, i18n, layout, Netlify config) ✅
-- [ ] **Phase 1** — DB + Role + Google Auth
+- [x] **Phase 1** — DB schema + RLS + Google Auth + กรอกโปรไฟล์ครั้งแรก ✅ *(โค้ดเสร็จ — รอเชื่อม Supabase จริง ดู [supabase/README.md](./supabase/README.md))*
 - [ ] **Phase 2** — LINE OA & LIFF
 - [ ] **Phase 3** — หน้าบ้านสมาชิก
 - [ ] **Phase 4** — หลังบ้านแอดมิน

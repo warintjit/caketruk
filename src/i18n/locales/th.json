@@ -11,10 +11,29 @@
     "history": "ประวัติการใช้",
     "logout": "ออกจากระบบ"
   },
+  "home": {
+    "hello": "สวัสดี",
+    "points": "คะแนนสะสม",
+    "pointsUnit": "คะแนน"
+  },
   "common": {
     "comingSoon": "เร็วๆ นี้",
     "loading": "กำลังโหลด...",
     "language": "ภาษา"
+  },
+  "auth": {
+    "loginWithGoogle": "เข้าสู่ระบบด้วย Google",
+    "loginHint": "เปิดผ่าน LINE จะล็อกอินอัตโนมัติ (เร็วๆ นี้)",
+    "completeTitle": "กรอกข้อมูลสมาชิก",
+    "completeHint": "ดึงชื่อและรูปจากบัญชีของคุณมาให้แล้ว — กรอกเพิ่มอีกนิดเดียว",
+    "displayName": "ชื่อ",
+    "lastName": "นามสกุล",
+    "birthday": "วันเกิด",
+    "phone": "เบอร์โทร",
+    "phoneLocked": "ใช้สำหรับสะสมคะแนน — กรอกแล้วแก้ไขไม่ได้",
+    "saveProfile": "บันทึกข้อมูล",
+    "errPhone": "กรุณากรอกเบอร์โทรให้ถูกต้อง",
+    "errPhoneDup": "เบอร์โทรนี้ถูกใช้แล้ว"
   },
   "footer": {
     "credit": "dev by Kru_Boat"

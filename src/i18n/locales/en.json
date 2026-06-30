@@ -11,10 +11,29 @@
     "history": "History",
     "logout": "Logout"
   },
+  "home": {
+    "hello": "Hi",
+    "points": "Points balance",
+    "pointsUnit": "pts"
+  },
   "common": {
     "comingSoon": "Coming soon",
     "loading": "Loading...",
     "language": "Language"
+  },
+  "auth": {
+    "loginWithGoogle": "Sign in with Google",
+    "loginHint": "Opening via LINE will log you in automatically (soon)",
+    "completeTitle": "Complete your profile",
+    "completeHint": "We pulled your name and photo from your account — just a little more",
+    "displayName": "First name",
+    "lastName": "Last name",
+    "birthday": "Date of birth",
+    "phone": "Phone number",
+    "phoneLocked": "Used for collecting points — cannot be changed once saved",
+    "saveProfile": "Save profile",
+    "errPhone": "Please enter a valid phone number",
+    "errPhoneDup": "This phone number is already in use"
   },
   "footer": {
     "credit": "dev by Kru_Boat"
