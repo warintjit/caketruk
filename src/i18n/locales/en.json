@@ -1,0 +1,22 @@
+{
+  "app": {
+    "name": "Cake'Teeruk",
+    "tagline": "Bakery & Restaurant"
+  },
+  "nav": {
+    "home": "Home",
+    "promotions": "Promotions",
+    "menu": "Menu",
+    "packages": "Special Packages",
+    "history": "History",
+    "logout": "Logout"
+  },
+  "common": {
+    "comingSoon": "Coming soon",
+    "loading": "Loading...",
+    "language": "Language"
+  },
+  "footer": {
+    "credit": "dev by Kru_Boat"
+  }
+}

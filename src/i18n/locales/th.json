@@ -1,0 +1,22 @@
+{
+  "app": {
+    "name": "เค้กที่รัก",
+    "tagline": "Bakery & Restaurant"
+  },
+  "nav": {
+    "home": "หน้าแรก",
+    "promotions": "โปรโมชัน",
+    "menu": "เมนู",
+    "packages": "แพคเกจพิเศษ",
+    "history": "ประวัติการใช้",
+    "logout": "ออกจากระบบ"
+  },
+  "common": {
+    "comingSoon": "เร็วๆ นี้",
+    "loading": "กำลังโหลด...",
+    "language": "ภาษา"
+  },
+  "footer": {
+    "credit": "dev by Kru_Boat"
+  }
+}
