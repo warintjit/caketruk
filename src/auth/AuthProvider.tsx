@@ -36,6 +36,15 @@ async function loadOrCreateMember(session: Session): Promise<Member | null> {
     .single()
 
   if (insertError) {
+    // 23505 = unique violation: มีแถวถูกสร้างพร้อมกัน (race) → ดึงแถวที่มีอยู่แทน
+    if (insertError.code === '23505') {
+      const { data: row } = await supabase
+        .from('members')
+        .select('*')
+        .eq('auth_id', userId)
+        .maybeSingle()
+      return (row as Member) ?? null
+    }
     console.error('[auth] สร้าง member ไม่สำเร็จ:', insertError.message)
     return null
   }
@@ -47,9 +56,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [member, setMember] = useState<Member | null>(null)
   const [loading, setLoading] = useState(true)
   const initialized = useRef(false)
+  const syncingFor = useRef<string | null>(null)
 
   const syncMember = useCallback(async (s: Session | null) => {
-    setMember(s ? await loadOrCreateMember(s) : null)
+    if (!s) {
+      setMember(null)
+      return
+    }
+    // กันเรียกซ้ำพร้อมกันสำหรับ user เดียวกัน (เลี่ยง race สร้าง member ซ้ำ)
+    if (syncingFor.current === s.user.id) return
+    syncingFor.current = s.user.id
+    try {
+      setMember(await loadOrCreateMember(s))
+    } finally {
+      syncingFor.current = null
+    }
   }, [])
 
   useEffect(() => {
