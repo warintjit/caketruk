@@ -1,7 +1,7 @@
 -- =====================================================================
 -- เค้กที่รัก — Phase 1: Schema + Functions + RLS
--- รันไฟล์นี้ "ครั้งเดียว" ใน Supabase SQL Editor (Database > SQL Editor)
--- รันไฟล์ 0002_seed.sql ต่อหลังจากนี้ (อย่าลืมแก้ owner_email)
+-- รันไฟล์นี้ใน Supabase SQL Editor (Database > SQL Editor)
+-- ปลอดภัยถ้ารันซ้ำ (idempotent) — แล้วรัน 0002_seed.sql ต่อ
 -- =====================================================================
 
 -- ---------- ประเภท role (4 บทบาท) ----------
@@ -45,16 +45,16 @@ create table if not exists public.point_transactions (
   id            uuid primary key default gen_random_uuid(),
   member_id     uuid not null references public.members (id) on delete cascade,
   type          text not null check (type in ('earn', 'adjust')),
-  bill_amount   numeric(10, 2),             -- ยอดบิล (เฉพาะ earn)
-  points        integer not null,           -- บวก=เพิ่ม / ลบ=ลด
+  bill_amount   numeric(10, 2),
+  points        integer not null,
   balance_after integer not null,
-  created_by    uuid references public.members (id),  -- แอดมินผู้ทำรายการ
+  created_by    uuid references public.members (id),
   note          text,
   created_at    timestamptz not null default now()
 );
 create index if not exists idx_pt_member on public.point_transactions (member_id, created_at desc);
 
--- 9.3 promotions (โปรโมชัน)
+-- 9.3 promotions
 create table if not exists public.promotions (
   id             uuid primary key default gen_random_uuid(),
   title_th       text,
@@ -68,7 +68,7 @@ create table if not exists public.promotions (
   updated_at     timestamptz not null default now()
 );
 
--- 9.4 special_packages (แพคเกจพิเศษ) — default ปิด (หน้าบ้านขึ้น "เร็วๆ นี้")
+-- 9.4 special_packages — default ปิด (หน้าบ้านขึ้น "เร็วๆ นี้")
 create table if not exists public.special_packages (
   id             uuid primary key default gen_random_uuid(),
   name_th        text,
@@ -96,7 +96,7 @@ create table if not exists public.coupons (
   updated_at        timestamptz not null default now()
 );
 
--- 9.6 coupon_redemptions (การใช้คูปอง) — period = 'YYYY-MM' ใช้นับสิทธิ์รายเดือน
+-- 9.6 coupon_redemptions — period = 'YYYY-MM'
 create table if not exists public.coupon_redemptions (
   id        uuid primary key default gen_random_uuid(),
   coupon_id uuid not null references public.coupons (id) on delete cascade,
@@ -115,9 +115,9 @@ create table if not exists public.menu_images (
   created_at timestamptz not null default now()
 );
 
--- 9.8a settings (ตั้งค่าสาธารณะ — สมาชิกอ่านได้: ลิงก์ + toggle เมนู)
+-- 9.8a settings (สาธารณะ — สมาชิกอ่านได้: ลิงก์ + toggle เมนู)
 create table if not exists public.settings (
-  id               boolean primary key default true check (id),  -- singleton 1 แถว
+  id               boolean primary key default true check (id),
   google_map_url   text,
   facebook_url     text,
   show_promotions  boolean not null default true,
@@ -127,18 +127,17 @@ create table if not exists public.settings (
   updated_at       timestamptz not null default now()
 );
 
--- 9.8b secure_settings (ตั้งค่าลับ — เฉพาะ developer/super_admin + server)
--- Bot Token ไม่เปิดให้ฝั่ง client อ่าน (ตาม SRS ข้อ 8)
+-- 9.8b secure_settings (ลับ — เฉพาะ developer/super_admin + server)
 create table if not exists public.secure_settings (
   id                 boolean primary key default true check (id),
   telegram_bot_token text,
   telegram_chat_id   text,
-  owner_email        text,                  -- อีเมลเจ้าของร้าน → auto เป็น super_admin ครั้งแรก
+  owner_email        text,
   updated_at         timestamptz not null default now()
 );
 
 -- =====================================================================
--- ฟังก์ชันช่วยตรวจสิทธิ์ (SECURITY DEFINER เพื่อเลี่ยง RLS recursion)
+-- ฟังก์ชันช่วยตรวจสิทธิ์ (SECURITY DEFINER เลี่ยง RLS recursion)
 -- =====================================================================
 create or replace function public.my_role()
 returns public.member_role language sql stable security definer set search_path = public as $$
@@ -150,23 +149,19 @@ returns uuid language sql stable security definer set search_path = public as $$
   select id from public.members where auth_id = auth.uid()
 $$;
 
--- เพิ่ม/ลดคะแนนได้: admin, developer, super_admin
 create or replace function public.can_manage_points()
 returns boolean language sql stable security definer set search_path = public as $$
   select coalesce(public.my_role() in ('admin', 'developer', 'super_admin'), false)
 $$;
 
--- จัดการทุกอย่าง (สมาชิก/เนื้อหา/ตั้งค่า/role): developer, super_admin
 create or replace function public.can_manage_all()
 returns boolean language sql stable security definer set search_path = public as $$
   select coalesce(public.my_role() in ('developer', 'super_admin'), false)
 $$;
 
 -- =====================================================================
--- Trigger ป้องกันข้อมูล members (กัน privilege escalation + ฟิลด์ห้ามแก้)
+-- Trigger ป้องกันข้อมูล members (กัน privilege escalation)
 -- =====================================================================
-
--- ก่อน INSERT: บังคับสิทธิ์ role + auto super_admin ให้เจ้าของร้าน
 create or replace function public.members_before_insert()
 returns trigger language plpgsql security definer set search_path = public as $$
 declare
@@ -175,15 +170,11 @@ declare
   v_has_super  boolean;
 begin
   if not v_privileged then
-    -- ห้ามตั้ง super_admin เว้นแต่ผู้ทำเป็น super_admin เอง
     if new.role = 'super_admin' and coalesce(public.my_role(), 'member') <> 'super_admin' then
       raise exception 'เฉพาะ super_admin เท่านั้นที่ตั้ง super_admin ได้';
     end if;
-
-    -- คนสมัครเอง (ไม่ใช่ผู้จัดการ) → บังคับเป็น member ก่อน
     if not public.can_manage_all() then
       new.role := 'member';
-      -- ยกเว้น: อีเมลเจ้าของร้าน และยังไม่มี super_admin → ตั้งให้เป็น super_admin
       select owner_email into v_owner from public.secure_settings where id = true;
       if v_owner is not null and new.email is not null and lower(new.email) = lower(v_owner) then
         select exists(select 1 from public.members where role = 'super_admin') into v_has_super;
@@ -196,23 +187,21 @@ begin
   return new;
 end $$;
 
-create or replace trigger trg_members_before_insert
+drop trigger if exists trg_members_before_insert on public.members;
+create trigger trg_members_before_insert
   before insert on public.members
   for each row execute function public.members_before_insert();
 
--- ก่อน UPDATE: ฟิลด์ห้ามแก้ + role/คะแนน/เบอร์ ต้องผ่านฟังก์ชันเฉพาะ
 create or replace function public.members_before_update()
 returns trigger language plpgsql as $$
 declare
   v_privileged boolean := (coalesce(current_setting('app.privileged', true), '') = 'on');
 begin
-  -- ฟิลด์ระบบ ห้ามแก้เด็ดขาด
   if new.auth_id is distinct from old.auth_id
      or new.provider is distinct from old.provider
      or new.email is distinct from old.email then
     raise exception 'ห้ามแก้ auth_id / provider / email';
   end if;
-
   if not v_privileged then
     if new.role is distinct from old.role then
       raise exception 'ห้ามแก้ role โดยตรง — ใช้ฟังก์ชัน set_role()';
@@ -224,25 +213,30 @@ begin
       raise exception 'ห้ามแก้เบอร์โทรหลังกรอกครั้งแรกแล้ว';
     end if;
   end if;
-
   new.updated_at := now();
   return new;
 end $$;
 
-create or replace trigger trg_members_before_update
+drop trigger if exists trg_members_before_update on public.members;
+create trigger trg_members_before_update
   before update on public.members
   for each row execute function public.members_before_update();
 
 -- updated_at สำหรับตารางอื่น
-create or replace trigger trg_promotions_updated before update on public.promotions
+drop trigger if exists trg_promotions_updated on public.promotions;
+create trigger trg_promotions_updated before update on public.promotions
   for each row execute function public.set_updated_at();
-create or replace trigger trg_packages_updated before update on public.special_packages
+drop trigger if exists trg_packages_updated on public.special_packages;
+create trigger trg_packages_updated before update on public.special_packages
   for each row execute function public.set_updated_at();
-create or replace trigger trg_coupons_updated before update on public.coupons
+drop trigger if exists trg_coupons_updated on public.coupons;
+create trigger trg_coupons_updated before update on public.coupons
   for each row execute function public.set_updated_at();
-create or replace trigger trg_settings_updated before update on public.settings
+drop trigger if exists trg_settings_updated on public.settings;
+create trigger trg_settings_updated before update on public.settings
   for each row execute function public.set_updated_at();
-create or replace trigger trg_secure_settings_updated before update on public.secure_settings
+drop trigger if exists trg_secure_settings_updated on public.secure_settings;
+create trigger trg_secure_settings_updated before update on public.secure_settings
   for each row execute function public.set_updated_at();
 
 -- =====================================================================
@@ -277,7 +271,7 @@ begin
     if p_bill is null or p_bill < 0 then
       raise exception 'ยอดบิลไม่ถูกต้อง';
     end if;
-    v_points := floor(p_bill / 300)::int;        -- สูตรคะแนน
+    v_points := floor(p_bill / 300)::int;
   elsif p_type = 'adjust' then
     if p_points is null then
       raise exception 'ต้องระบุจำนวนคะแนนสำหรับการปรับ (บวก=เพิ่ม, ลบ=ลด)';
@@ -292,7 +286,7 @@ begin
     raise exception 'คะแนนคงเหลือติดลบไม่ได้ (คงเหลือ %, ปรับ %)', v_member.points_balance, v_points;
   end if;
 
-  perform set_config('app.privileged', 'on', true);  -- อนุญาตแก้คะแนนผ่านฟังก์ชันนี้
+  perform set_config('app.privileged', 'on', true);
   update public.members set points_balance = v_new_balance where id = v_member.id;
 
   insert into public.point_transactions (member_id, type, bill_amount, points, balance_after, created_by, note)
@@ -322,14 +316,12 @@ begin
     raise exception 'ไม่พบสมาชิก';
   end if;
 
-  -- แตะ super_admin ได้เฉพาะ super_admin เท่านั้น (ตั้งเป็น หรือถอดออก)
   if (p_role = 'super_admin' or v_target.role = 'super_admin') and v_actor_role <> 'super_admin' then
     raise exception 'เฉพาะ super_admin เท่านั้นที่จัดการตำแหน่ง super_admin ได้';
   end if;
 
   perform set_config('app.privileged', 'on', true);
 
-  -- ตั้ง super_admin = โอนตำแหน่ง (มีได้คนเดียว) → ลดเจ้าของเดิมเป็น developer
   if p_role = 'super_admin' then
     update public.members set role = 'developer' where role = 'super_admin' and id <> p_member_id;
   end if;
@@ -352,86 +344,118 @@ alter table public.settings enable row level security;
 alter table public.secure_settings enable row level security;
 
 -- ---------- members ----------
+drop policy if exists members_select on public.members;
 create policy members_select on public.members for select
   using (auth_id = auth.uid() or public.can_manage_points());
+drop policy if exists members_insert_self on public.members;
 create policy members_insert_self on public.members for insert
   with check (auth_id = auth.uid());
+drop policy if exists members_insert_manage on public.members;
 create policy members_insert_manage on public.members for insert
   with check (public.can_manage_all());
+drop policy if exists members_update_self on public.members;
 create policy members_update_self on public.members for update
   using (auth_id = auth.uid()) with check (auth_id = auth.uid());
+drop policy if exists members_update_manage on public.members;
 create policy members_update_manage on public.members for update
   using (public.can_manage_all()) with check (public.can_manage_all());
+drop policy if exists members_delete_manage on public.members;
 create policy members_delete_manage on public.members for delete
   using (public.can_manage_all());
 
 -- ---------- point_transactions (insert/update/delete เฉพาะผ่าน RPC) ----------
+drop policy if exists pt_select on public.point_transactions;
 create policy pt_select on public.point_transactions for select
   using (member_id = public.my_member_id() or public.can_manage_points());
 
 -- ---------- promotions ----------
+drop policy if exists promo_select on public.promotions;
 create policy promo_select on public.promotions for select
   using (public.can_manage_all()
          or (is_active and coalesce((select show_promotions from public.settings where id), false)));
+drop policy if exists promo_manage on public.promotions;
 create policy promo_manage on public.promotions for all
   using (public.can_manage_all()) with check (public.can_manage_all());
 
 -- ---------- special_packages ----------
+drop policy if exists pkg_select on public.special_packages;
 create policy pkg_select on public.special_packages for select
   using (public.can_manage_all()
          or (is_active and coalesce((select show_packages from public.settings where id), false)));
+drop policy if exists pkg_manage on public.special_packages;
 create policy pkg_manage on public.special_packages for all
   using (public.can_manage_all()) with check (public.can_manage_all());
 
 -- ---------- coupons ----------
+drop policy if exists coupon_select on public.coupons;
 create policy coupon_select on public.coupons for select
   using (public.can_manage_all()
          or (is_active and coalesce((select show_coupons from public.settings where id), false)));
+drop policy if exists coupon_manage on public.coupons;
 create policy coupon_manage on public.coupons for all
   using (public.can_manage_all()) with check (public.can_manage_all());
 
 -- ---------- coupon_redemptions ----------
--- หมายเหตุ: การจำกัดจำนวนครั้ง/เดือน จะบังคับผ่าน RPC redeem_coupon ใน Phase 4
+drop policy if exists redemption_select on public.coupon_redemptions;
 create policy redemption_select on public.coupon_redemptions for select
   using (member_id = public.my_member_id() or public.can_manage_points());
+drop policy if exists redemption_insert_self on public.coupon_redemptions;
 create policy redemption_insert_self on public.coupon_redemptions for insert
   with check (member_id = public.my_member_id());
 
 -- ---------- menu_images ----------
+drop policy if exists menu_select on public.menu_images;
 create policy menu_select on public.menu_images for select
   using (auth.uid() is not null);
+drop policy if exists menu_manage on public.menu_images;
 create policy menu_manage on public.menu_images for all
   using (public.can_manage_all()) with check (public.can_manage_all());
 
--- ---------- settings (สาธารณะอ่านได้ / จัดการเฉพาะ manager) ----------
+-- ---------- settings ----------
+drop policy if exists settings_select on public.settings;
 create policy settings_select on public.settings for select
   using (auth.uid() is not null);
+drop policy if exists settings_manage on public.settings;
 create policy settings_manage on public.settings for all
   using (public.can_manage_all()) with check (public.can_manage_all());
 
 -- ---------- secure_settings (เฉพาะ manager + service role) ----------
+drop policy if exists secure_settings_manage on public.secure_settings;
 create policy secure_settings_manage on public.secure_settings for all
   using (public.can_manage_all()) with check (public.can_manage_all());
 
 -- =====================================================================
--- Storage: bucket "images" (อ่านสาธารณะ / อัปโหลด-แก้-ลบ เฉพาะ manager)
--- =====================================================================
-insert into storage.buckets (id, name, public)
-  values ('images', 'images', true)
-  on conflict (id) do nothing;
-
-create policy "images public read" on storage.objects for select
-  using (bucket_id = 'images');
-create policy "images manager insert" on storage.objects for insert
-  with check (bucket_id = 'images' and public.can_manage_all());
-create policy "images manager update" on storage.objects for update
-  using (bucket_id = 'images' and public.can_manage_all());
-create policy "images manager delete" on storage.objects for delete
-  using (bucket_id = 'images' and public.can_manage_all());
-
--- =====================================================================
--- สิทธิ์ระดับตาราง/ฟังก์ชัน (RLS เป็นด่านจริง ด่านนี้แค่เปิดทาง)
+-- สิทธิ์ระดับตาราง/ฟังก์ชัน (RLS เป็นด่านจริง)
 -- =====================================================================
 grant usage on schema public to anon, authenticated;
 grant select, insert, update, delete on all tables in schema public to authenticated;
 grant execute on all functions in schema public to authenticated;
+
+-- =====================================================================
+-- Storage: bucket "images" — หุ้มด้วยตัวกัน error
+-- (ถ้าสิทธิ์ไม่พอจะข้าม ไม่ทำให้ทั้งไฟล์ล้ม — ตั้ง policy ผ่าน Dashboard ได้ภายหลัง)
+-- =====================================================================
+do $$
+begin
+  insert into storage.buckets (id, name, public)
+    values ('images', 'images', true)
+    on conflict (id) do nothing;
+
+  drop policy if exists "images public read" on storage.objects;
+  create policy "images public read" on storage.objects for select
+    using (bucket_id = 'images');
+  drop policy if exists "images manager insert" on storage.objects;
+  create policy "images manager insert" on storage.objects for insert
+    with check (bucket_id = 'images' and public.can_manage_all());
+  drop policy if exists "images manager update" on storage.objects;
+  create policy "images manager update" on storage.objects for update
+    using (bucket_id = 'images' and public.can_manage_all());
+  drop policy if exists "images manager delete" on storage.objects;
+  create policy "images manager delete" on storage.objects for delete
+    using (bucket_id = 'images' and public.can_manage_all());
+exception when insufficient_privilege or others then
+  raise notice 'ข้ามการตั้งค่า storage (สิทธิ์ไม่พอ) — ตั้ง bucket/policy ผ่าน Dashboard ภายหลังได้: %', sqlerrm;
+end $$;
+
+-- บังคับ PostgREST รีเฟรช schema cache ทันที
+notify pgrst, 'reload schema';
