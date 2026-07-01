@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { supabase } from '@/lib/supabase'
 import type { Promotion } from '@/types/database'
@@ -43,21 +44,26 @@ export default function PromotionsPage() {
       ) : (
         <ul className="space-y-4">
           {items.map((p) => (
-            <li key={p.id} className="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm">
-              {p.image_url && (
-                <img src={p.image_url} alt={title(p) ?? ''} className="w-full object-cover" />
-              )}
-              <div className="p-4">
-                {title(p) && <p className="font-bold text-gray-800">{title(p)}</p>}
-                <div className="mt-1 flex items-center justify-between gap-3">
-                  <p className="whitespace-pre-line text-sm text-gray-500">{desc(p) ?? ''}</p>
-                  {p.points_required != null && (
-                    <span className="shrink-0 rounded-full bg-cake-600 px-3 py-1 text-sm font-bold text-white shadow-sm">
-                      {t('promo.usePoints', { points: p.points_required })}
-                    </span>
-                  )}
+            <li key={p.id}>
+              <Link
+                to={`/promotions/${p.id}`}
+                className="block overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm transition hover:shadow-md"
+              >
+                {p.image_url && (
+                  <img src={p.image_url} alt={title(p) ?? ''} className="w-full object-cover" />
+                )}
+                <div className="p-4">
+                  {title(p) && <p className="font-bold text-gray-800">{title(p)}</p>}
+                  <div className="mt-1 flex items-center justify-between gap-3">
+                    <p className="whitespace-pre-line text-sm text-gray-500">{desc(p) ?? ''}</p>
+                    {p.points_required != null && (
+                      <span className="shrink-0 rounded-full bg-cake-600 px-3 py-1 text-sm font-bold text-white shadow-sm">
+                        {t('promo.usePoints', { points: p.points_required })}
+                      </span>
+                    )}
+                  </div>
                 </div>
-              </div>
+              </Link>
             </li>
           ))}
         </ul>

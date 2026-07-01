@@ -39,10 +39,23 @@ export interface Promotion {
   description_en: string | null
   image_url: string | null
   points_required: number | null
+  start_date: string | null
+  end_date: string | null
   is_active: boolean
   sort_order: number
   created_at: string
   updated_at: string
+}
+
+export interface PromotionClaim {
+  id: string
+  promotion_id: string
+  member_id: string
+  points_used: number
+  status: 'pending' | 'confirmed' | 'cancelled'
+  handled_by: string | null
+  created_at: string
+  resolved_at: string | null
 }
 
 export interface SpecialPackage {

@@ -8,6 +8,7 @@ import LoginPage from '@/pages/LoginPage'
 import CompleteProfilePage from '@/pages/CompleteProfilePage'
 import HomePage from '@/pages/HomePage'
 import PromotionsPage from '@/pages/PromotionsPage'
+import PromotionDetailPage from '@/pages/PromotionDetailPage'
 import MenuPage from '@/pages/MenuPage'
 import HistoryPage from '@/pages/HistoryPage'
 import EditProfilePage from '@/pages/EditProfilePage'
@@ -22,6 +23,7 @@ import CouponsAdminPage from '@/pages/admin/CouponsAdminPage'
 import PackagesAdminPage from '@/pages/admin/PackagesAdminPage'
 import HomeTilesAdminPage from '@/pages/admin/HomeTilesAdminPage'
 import ReportsPage from '@/pages/admin/ReportsPage'
+import PromotionClaimsPage from '@/pages/admin/PromotionClaimsPage'
 
 export default function App() {
   return (
@@ -38,6 +40,7 @@ export default function App() {
             <Route element={<Layout />}>
               <Route index element={<HomePage />} />
               <Route path="promotions" element={<PromotionsPage />} />
+              <Route path="promotions/:id" element={<PromotionDetailPage />} />
               <Route path="menu" element={<MenuPage />} />
               <Route path="coupons" element={<CouponsPage />} />
               <Route path="packages" element={<PackagesPage />} />
@@ -47,6 +50,7 @@ export default function App() {
               {/* หลังบ้าน — เฉพาะ admin/developer/super_admin */}
               <Route element={<AdminRoute />}>
                 <Route path="admin/points" element={<ManagePointsPage />} />
+                <Route path="admin/promotion-claims" element={<PromotionClaimsPage />} />
               </Route>
 
               {/* จัดการระดับสูง — เฉพาะ developer/super_admin */}

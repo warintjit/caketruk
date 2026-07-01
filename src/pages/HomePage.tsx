@@ -145,6 +145,9 @@ export default function HomePage() {
           <NavCard to="/admin/points" variant="primary">
             {t('nav.managePoints')}
           </NavCard>
+          <NavCard to="/admin/promotion-claims" variant="admin">
+            {t('claim.adminTitle')}
+          </NavCard>
           {isManager && (
             <>
               <NavCard to="/admin/reports" variant="admin">

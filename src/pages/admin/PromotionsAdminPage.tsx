@@ -12,6 +12,8 @@ type Draft = {
   description_th: string
   description_en: string
   points_required: string
+  start_date: string
+  end_date: string
   image_url: string | null
   sort_order: number
   is_active: boolean
@@ -24,6 +26,8 @@ const emptyDraft: Draft = {
   description_th: '',
   description_en: '',
   points_required: '',
+  start_date: '',
+  end_date: '',
   image_url: null,
   sort_order: 0,
   is_active: true,
@@ -69,6 +73,8 @@ export default function PromotionsAdminPage() {
       description_th: p.description_th ?? '',
       description_en: p.description_en ?? '',
       points_required: p.points_required != null ? String(p.points_required) : '',
+      start_date: p.start_date ?? '',
+      end_date: p.end_date ?? '',
       image_url: p.image_url,
       sort_order: p.sort_order,
       is_active: p.is_active,
@@ -109,6 +115,8 @@ export default function PromotionsAdminPage() {
       description_th: draft.description_th.trim() || null,
       description_en: draft.description_en.trim() || null,
       points_required: draft.points_required.trim() === '' ? null : Number(draft.points_required),
+      start_date: draft.start_date || null,
+      end_date: draft.end_date || null,
       image_url: draft.image_url,
       sort_order: draft.sort_order,
       is_active: draft.is_active,
@@ -217,6 +225,25 @@ export default function PromotionsAdminPage() {
               className="input"
             />
           </Field>
+
+          <div className="grid grid-cols-2 gap-3">
+            <Field label={t('promo.startDate')}>
+              <input
+                type="date"
+                value={draft.start_date}
+                onChange={(e) => setDraft({ ...draft, start_date: e.target.value })}
+                className="input"
+              />
+            </Field>
+            <Field label={t('promo.endDate')}>
+              <input
+                type="date"
+                value={draft.end_date}
+                onChange={(e) => setDraft({ ...draft, end_date: e.target.value })}
+                className="input"
+              />
+            </Field>
+          </div>
 
           <div className="flex items-center gap-4">
             <label className="flex items-center gap-2 text-sm text-gray-700">
