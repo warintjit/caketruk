@@ -56,6 +56,17 @@ export default function HomePage() {
         </Link>
       )}
 
+      {/* ตั้งค่าร้าน — เฉพาะ developer/super_admin */}
+      {canManageAll(member) && (
+        <Link
+          to="/admin/settings"
+          className="flex items-center justify-between rounded-xl border border-cake-200 bg-white px-4 py-3 font-semibold text-cake-700 shadow-sm transition hover:bg-cake-50"
+        >
+          {t('settings.title')}
+          <span aria-hidden>→</span>
+        </Link>
+      )}
+
       <button
         type="button"
         onClick={() => void signOut()}

@@ -92,6 +92,22 @@
     "roleAdmin": "Admin",
     "roleMember": "Member"
   },
+  "settings": {
+    "title": "Store settings",
+    "hint": "Contact links and member-facing menu toggles",
+    "googleMap": "Google Maps link",
+    "facebook": "Facebook link",
+    "urlPlaceholder": "https://...",
+    "toggles": "Show on member side",
+    "showPromotions": "Promotions",
+    "showCoupons": "Coupons",
+    "showPackages": "Special packages",
+    "save": "Save",
+    "saving": "Saving...",
+    "saved": "Saved",
+    "loading": "Loading...",
+    "errUrl": "Link must start with http:// or https://"
+  },
   "footer": {
     "credit": "dev by Kru_Boat"
   }

@@ -92,6 +92,22 @@
     "roleAdmin": "แอดมิน",
     "roleMember": "สมาชิก"
   },
+  "settings": {
+    "title": "ตั้งค่าร้าน",
+    "hint": "ลิงก์ติดต่อ และการเปิด/ปิดเมนูฝั่งสมาชิก",
+    "googleMap": "ลิงก์ Google Maps",
+    "facebook": "ลิงก์ Facebook",
+    "urlPlaceholder": "https://...",
+    "toggles": "แสดงเมนูฝั่งสมาชิก",
+    "showPromotions": "โปรโมชัน",
+    "showCoupons": "คูปอง",
+    "showPackages": "แพคเกจพิเศษ",
+    "save": "บันทึก",
+    "saving": "กำลังบันทึก...",
+    "saved": "บันทึกแล้ว",
+    "loading": "กำลังโหลด...",
+    "errUrl": "ลิงก์ต้องขึ้นต้นด้วย http:// หรือ https://"
+  },
   "footer": {
     "credit": "dev by Kru_Boat"
   }

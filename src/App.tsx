@@ -12,6 +12,7 @@ import MenuPage from '@/pages/MenuPage'
 import HistoryPage from '@/pages/HistoryPage'
 import ManagePointsPage from '@/pages/admin/ManagePointsPage'
 import MembersPage from '@/pages/admin/MembersPage'
+import SettingsPage from '@/pages/admin/SettingsPage'
 
 export default function App() {
   return (
@@ -39,6 +40,7 @@ export default function App() {
               {/* จัดการระดับสูง — เฉพาะ developer/super_admin */}
               <Route element={<ManagerRoute />}>
                 <Route path="admin/members" element={<MembersPage />} />
+                <Route path="admin/settings" element={<SettingsPage />} />
               </Route>
             </Route>
           </Route>
