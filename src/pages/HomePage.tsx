@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '@/auth/context'
-import { canManagePoints } from '@/auth/roles'
+import { canManagePoints, canManageAll } from '@/auth/roles'
 
 export default function HomePage() {
   const { t } = useTranslation()
@@ -32,6 +32,17 @@ export default function HomePage() {
           className="flex items-center justify-between rounded-xl bg-cake-600 px-4 py-3 font-semibold text-white shadow-md transition hover:bg-cake-700"
         >
           {t('nav.managePoints')}
+          <span aria-hidden>→</span>
+        </Link>
+      )}
+
+      {/* จัดการสมาชิก/role — เฉพาะ developer/super_admin */}
+      {canManageAll(member) && (
+        <Link
+          to="/admin/members"
+          className="flex items-center justify-between rounded-xl border border-cake-200 bg-white px-4 py-3 font-semibold text-cake-700 shadow-sm transition hover:bg-cake-50"
+        >
+          {t('members.title')}
           <span aria-hidden>→</span>
         </Link>
       )}

@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider } from '@/auth/AuthProvider'
 import ProtectedRoute from '@/components/ProtectedRoute'
 import AdminRoute from '@/components/AdminRoute'
+import ManagerRoute from '@/components/ManagerRoute'
 import Layout from '@/components/Layout'
 import LoginPage from '@/pages/LoginPage'
 import CompleteProfilePage from '@/pages/CompleteProfilePage'
@@ -9,6 +10,7 @@ import HomePage from '@/pages/HomePage'
 import PromotionsPage from '@/pages/PromotionsPage'
 import MenuPage from '@/pages/MenuPage'
 import ManagePointsPage from '@/pages/admin/ManagePointsPage'
+import MembersPage from '@/pages/admin/MembersPage'
 
 export default function App() {
   return (
@@ -30,6 +32,11 @@ export default function App() {
               {/* หลังบ้าน — เฉพาะ admin/developer/super_admin */}
               <Route element={<AdminRoute />}>
                 <Route path="admin/points" element={<ManagePointsPage />} />
+              </Route>
+
+              {/* จัดการระดับสูง — เฉพาะ developer/super_admin */}
+              <Route element={<ManagerRoute />}>
+                <Route path="admin/members" element={<MembersPage />} />
               </Route>
             </Route>
           </Route>

@@ -66,6 +66,24 @@
     "errBill": "กรอกยอดบิลให้ถูกต้อง",
     "errPoints": "กรอกจำนวนคะแนน (ไม่เท่ากับ 0)"
   },
+  "members": {
+    "title": "จัดการสมาชิก",
+    "hint": "ค้นหาสมาชิก แล้วกำหนดบทบาท (role)",
+    "search": "ค้นหาชื่อ / เบอร์ / อีเมล",
+    "count": "สมาชิกทั้งหมด {{count}} คน",
+    "you": "คุณ",
+    "role": "บทบาท",
+    "noResult": "ไม่พบสมาชิก",
+    "loading": "กำลังโหลด...",
+    "noPhone": "(ยังไม่กรอกเบอร์)",
+    "confirmSuper": "ยืนยันโอนตำแหน่ง super_admin ให้ {{name}}?\nคนที่เป็น super_admin เดิมจะกลายเป็น developer",
+    "changed": "เปลี่ยนบทบาทเรียบร้อย",
+    "roleLockedSuper": "เฉพาะ super_admin เท่านั้นที่แก้ตำแหน่งนี้ได้",
+    "roleSuper": "ซุปเปอร์แอดมิน",
+    "roleDeveloper": "ผู้พัฒนา",
+    "roleAdmin": "แอดมิน",
+    "roleMember": "สมาชิก"
+  },
   "footer": {
     "credit": "dev by Kru_Boat"
   }

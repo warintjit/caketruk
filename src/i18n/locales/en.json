@@ -66,6 +66,24 @@
     "errBill": "Enter a valid bill amount",
     "errPoints": "Enter a non-zero number of points"
   },
+  "members": {
+    "title": "Manage members",
+    "hint": "Search members and assign roles",
+    "search": "Search name / phone / email",
+    "count": "{{count}} members",
+    "you": "You",
+    "role": "Role",
+    "noResult": "No members found",
+    "loading": "Loading...",
+    "noPhone": "(no phone yet)",
+    "confirmSuper": "Transfer super_admin to {{name}}?\nThe current super_admin will become a developer",
+    "changed": "Role updated",
+    "roleLockedSuper": "Only a super_admin can change this role",
+    "roleSuper": "Super admin",
+    "roleDeveloper": "Developer",
+    "roleAdmin": "Admin",
+    "roleMember": "Member"
+  },
   "footer": {
     "credit": "dev by Kru_Boat"
   }
