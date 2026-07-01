@@ -13,6 +13,7 @@ import HistoryPage from '@/pages/HistoryPage'
 import ManagePointsPage from '@/pages/admin/ManagePointsPage'
 import MembersPage from '@/pages/admin/MembersPage'
 import SettingsPage from '@/pages/admin/SettingsPage'
+import PromotionsAdminPage from '@/pages/admin/PromotionsAdminPage'
 
 export default function App() {
   return (
@@ -41,6 +42,7 @@ export default function App() {
               <Route element={<ManagerRoute />}>
                 <Route path="admin/members" element={<MembersPage />} />
                 <Route path="admin/settings" element={<SettingsPage />} />
+                <Route path="admin/promotions" element={<PromotionsAdminPage />} />
               </Route>
             </Route>
           </Route>

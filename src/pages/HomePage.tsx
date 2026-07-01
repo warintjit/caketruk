@@ -25,7 +25,15 @@ export default function HomePage() {
         </p>
       </div>
 
-      {/* ประวัติคะแนน — สมาชิกทุกคน */}
+      {/* เมนูสมาชิก — ทุกคน */}
+      <Link
+        to="/promotions"
+        className="flex items-center justify-between rounded-xl border border-gray-200 bg-white px-4 py-3 font-semibold text-gray-700 shadow-sm transition hover:bg-gray-50"
+      >
+        {t('nav.promotions')}
+        <span aria-hidden>→</span>
+      </Link>
+
       <Link
         to="/history"
         className="flex items-center justify-between rounded-xl border border-gray-200 bg-white px-4 py-3 font-semibold text-gray-700 shadow-sm transition hover:bg-gray-50"
@@ -52,6 +60,17 @@ export default function HomePage() {
           className="flex items-center justify-between rounded-xl border border-cake-200 bg-white px-4 py-3 font-semibold text-cake-700 shadow-sm transition hover:bg-cake-50"
         >
           {t('members.title')}
+          <span aria-hidden>→</span>
+        </Link>
+      )}
+
+      {/* จัดการโปรโมชัน — เฉพาะ developer/super_admin */}
+      {canManageAll(member) && (
+        <Link
+          to="/admin/promotions"
+          className="flex items-center justify-between rounded-xl border border-cake-200 bg-white px-4 py-3 font-semibold text-cake-700 shadow-sm transition hover:bg-cake-50"
+        >
+          {t('promo.manageTitle')}
           <span aria-hidden>→</span>
         </Link>
       )}
