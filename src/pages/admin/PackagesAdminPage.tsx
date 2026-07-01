@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { supabase } from '@/lib/supabase'
 import { uploadImage, deleteImage } from '@/lib/storage'
+import Toggle from '@/components/Toggle'
 import type { SpecialPackage } from '@/types/database'
 
 type Draft = {
@@ -168,7 +169,8 @@ export default function PackagesAdminPage() {
               disabled={uploading}
               className="block w-full text-sm text-gray-500 file:mr-3 file:rounded-lg file:border-0 file:bg-cake-100 file:px-3 file:py-1.5 file:text-sm file:font-medium file:text-cake-700"
             />
-            {uploading && <p className="mt-1 text-xs text-gray-400">{t('pkg.uploading')}</p>}
+            <p className="mt-1 text-xs text-gray-400">{t('common.imageHint')}</p>
+            {uploading && <p className="mt-1 text-xs text-cake-600">{t('pkg.uploading')}</p>}
           </div>
 
           <Field label={t('pkg.nameTh')}>
@@ -265,7 +267,7 @@ export default function PackagesAdminPage() {
               {items.map((p) => (
                 <li
                   key={p.id}
-                  className="flex gap-3 rounded-xl border border-gray-100 bg-white p-3 shadow-sm"
+                  className="flex items-center gap-3 rounded-xl border border-gray-100 bg-white p-3 shadow-sm"
                 >
                   {p.image_url ? (
                     <img src={p.image_url} alt="" className="h-16 w-16 shrink-0 rounded-lg object-cover" />
@@ -279,25 +281,24 @@ export default function PackagesAdminPage() {
                     </p>
                     <p className="truncate text-xs text-gray-400">
                       {t('pkg.sortOrder')}: {p.sort_order}
-                      {!p.is_active && (
-                        <span className="ml-1 text-cake-600">· {t('pkg.inactive')}</span>
-                      )}
                     </p>
-                    <div className="mt-1.5 flex gap-3 text-xs">
+                    <div className="mt-2 flex items-center gap-4 text-xs">
                       <button type="button" onClick={() => startEdit(p)} className="font-medium text-cake-700">
                         {t('pkg.edit')}
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => void toggleActive(p)}
-                        className="font-medium text-gray-500"
-                      >
-                        {p.is_active ? t('pkg.inactive') : t('pkg.active')}
                       </button>
                       <button type="button" onClick={() => void remove(p)} className="font-medium text-cake-600">
                         {t('pkg.delete')}
                       </button>
                     </div>
+                  </div>
+                  {/* สวิตช์ เปิด/ปิด — ขอบขวาการ์ด ชัดเจน */}
+                  <div className="flex shrink-0 flex-col items-center gap-1">
+                    <Toggle checked={p.is_active} onChange={() => void toggleActive(p)} />
+                    <span
+                      className={`text-[11px] font-medium ${p.is_active ? 'text-cake-700' : 'text-gray-400'}`}
+                    >
+                      {p.is_active ? t('common.on') : t('common.off')}
+                    </span>
                   </div>
                 </li>
               ))}

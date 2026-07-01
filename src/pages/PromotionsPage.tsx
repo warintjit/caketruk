@@ -49,7 +49,14 @@ export default function PromotionsPage() {
               )}
               <div className="p-4">
                 {title(p) && <p className="font-bold text-gray-800">{title(p)}</p>}
-                {desc(p) && <p className="mt-1 whitespace-pre-line text-sm text-gray-600">{desc(p)}</p>}
+                <div className="mt-1 flex items-center justify-between gap-3">
+                  <p className="whitespace-pre-line text-sm text-gray-500">{desc(p) ?? ''}</p>
+                  {p.points_required != null && (
+                    <span className="shrink-0 rounded-full bg-cake-600 px-3 py-1 text-sm font-bold text-white shadow-sm">
+                      {t('promo.usePoints', { points: p.points_required })}
+                    </span>
+                  )}
+                </div>
               </div>
             </li>
           ))}

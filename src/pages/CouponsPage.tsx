@@ -16,6 +16,11 @@ function thaiPeriod(): string {
   return `${y}-${m}`
 }
 
+/** เดือนปัจจุบัน (1-12) ตามเวลาไทย */
+function thaiMonth(): number {
+  return Number(thaiPeriod().slice(5, 7))
+}
+
 export default function CouponsPage() {
   const { t, i18n } = useTranslation()
   const { member } = useAuth()
@@ -71,6 +76,14 @@ export default function CouponsPage() {
     setUsed((u) => ({ ...u, [c.id]: (u[c.id] ?? 0) + 1 }))
   }
 
+  // safety: ซ่อนคูปองวันเกิดที่ไม่ตรงเดือนเกิด (RLS กันฝั่ง member แล้ว —
+  // อันนี้กันกรณี manager ที่ RLS มองเห็นทุกอัน ให้เห็นตรงกับสมาชิกจริง)
+  const birthMonth = member?.birthday ? Number(member.birthday.slice(5, 7)) : null
+  const currentMonth = thaiMonth()
+  const visibleCoupons = coupons.filter(
+    (c) => !c.is_birthday || birthMonth === currentMonth,
+  )
+
   return (
     <div className="space-y-4">
       <h1 className="text-xl font-bold text-cake-700">{t('nav.coupons')}</h1>
@@ -79,11 +92,11 @@ export default function CouponsPage() {
 
       {loading ? (
         <p className="text-sm text-gray-400">{t('coupon.loading')}</p>
-      ) : coupons.length === 0 ? (
+      ) : visibleCoupons.length === 0 ? (
         <p className="text-sm text-gray-400">{t('coupon.memberEmpty')}</p>
       ) : (
         <ul className="space-y-4">
-          {coupons.map((c) => {
+          {visibleCoupons.map((c) => {
             const remaining = c.max_uses_per_user - (used[c.id] ?? 0)
             const usedUp = remaining <= 0
             return (
@@ -93,7 +106,14 @@ export default function CouponsPage() {
               >
                 {c.image_url && <img src={c.image_url} alt={name(c)} className="w-full object-cover" />}
                 <div className="space-y-2 p-4">
-                  <p className="font-bold text-gray-800">{name(c)}</p>
+                  <p className="font-bold text-gray-800">
+                    {name(c)}
+                    {c.is_birthday && (
+                      <span className="ml-2 rounded-full bg-cake-100 px-2 py-0.5 text-xs font-semibold text-cake-700">
+                        {t('coupon.birthdayBadge')}
+                      </span>
+                    )}
+                  </p>
                   <p className="text-xs text-gray-500">
                     {t('coupon.remaining')}:{' '}
                     <span className={usedUp ? 'font-bold text-gray-400' : 'font-bold text-cake-600'}>

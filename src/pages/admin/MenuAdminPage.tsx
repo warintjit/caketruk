@@ -77,7 +77,8 @@ export default function MenuAdminPage() {
         </label>
       </div>
 
-      {uploading && <p className="text-sm text-gray-400">{t('menuMgr.uploading')}</p>}
+      <p className="text-xs text-gray-400">{t('common.imageHint')}</p>
+      {uploading && <p className="text-sm text-cake-600">{t('menuMgr.uploading')}</p>}
       {error && <p className="text-sm text-cake-600">{error}</p>}
 
       {loading ? (

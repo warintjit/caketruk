@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { supabase } from '@/lib/supabase'
 import { uploadImage, deleteImage } from '@/lib/storage'
+import Toggle from '@/components/Toggle'
 import type { Coupon } from '@/types/database'
 
 type Draft = {
@@ -10,6 +11,7 @@ type Draft = {
   name_en: string
   image_url: string | null
   max_uses_per_user: number
+  is_birthday: boolean
   sort_order: number
   is_active: boolean
 }
@@ -20,6 +22,7 @@ const emptyDraft: Draft = {
   name_en: '',
   image_url: null,
   max_uses_per_user: 1,
+  is_birthday: false,
   sort_order: 0,
   is_active: true,
 }
@@ -63,6 +66,7 @@ export default function CouponsAdminPage() {
       name_en: c.name_en ?? '',
       image_url: c.image_url,
       max_uses_per_user: c.max_uses_per_user,
+      is_birthday: c.is_birthday,
       sort_order: c.sort_order,
       is_active: c.is_active,
     })
@@ -101,6 +105,7 @@ export default function CouponsAdminPage() {
       name_en: draft.name_en.trim() || null,
       image_url: draft.image_url,
       max_uses_per_user: Math.max(1, draft.max_uses_per_user),
+      is_birthday: draft.is_birthday,
       sort_order: draft.sort_order,
       is_active: draft.is_active,
     }
@@ -159,7 +164,8 @@ export default function CouponsAdminPage() {
               disabled={uploading}
               className="block w-full text-sm text-gray-500 file:mr-3 file:rounded-lg file:border-0 file:bg-cake-100 file:px-3 file:py-1.5 file:text-sm file:font-medium file:text-cake-700"
             />
-            {uploading && <p className="mt-1 text-xs text-gray-400">{t('coupon.uploading')}</p>}
+            <p className="mt-1 text-xs text-gray-400">{t('common.imageHint')}</p>
+            {uploading && <p className="mt-1 text-xs text-cake-600">{t('coupon.uploading')}</p>}
           </div>
 
           <Field label={t('coupon.nameTh')}>
@@ -210,6 +216,19 @@ export default function CouponsAdminPage() {
             </label>
           </div>
 
+          <label className="flex items-start gap-2 rounded-lg bg-cake-50 p-3 text-sm text-gray-700">
+            <input
+              type="checkbox"
+              checked={draft.is_birthday}
+              onChange={(e) => setDraft({ ...draft, is_birthday: e.target.checked })}
+              className="mt-0.5 h-4 w-4 accent-cake-600"
+            />
+            <span>
+              <span className="font-medium">{t('coupon.birthday')}</span>
+              <span className="mt-0.5 block text-xs text-gray-500">{t('coupon.birthdayHint')}</span>
+            </span>
+          </label>
+
           {error && <p className="text-sm text-cake-600">{error}</p>}
 
           <div className="flex gap-2">
@@ -242,7 +261,7 @@ export default function CouponsAdminPage() {
               {items.map((c) => (
                 <li
                   key={c.id}
-                  className="flex gap-3 rounded-xl border border-gray-100 bg-white p-3 shadow-sm"
+                  className="flex items-center gap-3 rounded-xl border border-gray-100 bg-white p-3 shadow-sm"
                 >
                   {c.image_url ? (
                     <img src={c.image_url} alt="" className="h-16 w-16 shrink-0 rounded-lg object-cover" />
@@ -252,28 +271,30 @@ export default function CouponsAdminPage() {
                   <div className="min-w-0 flex-1">
                     <p className="truncate font-medium text-gray-800">
                       {c.name_th || c.name_en || '—'}
+                      {c.is_birthday && (
+                        <span className="ml-1 text-cake-600">{t('coupon.birthdayBadge')}</span>
+                      )}
                     </p>
                     <p className="truncate text-xs text-gray-400">
                       {t('coupon.maxUses')}: {c.max_uses_per_user}
-                      {!c.is_active && (
-                        <span className="ml-1 text-cake-600">· {t('coupon.inactive')}</span>
-                      )}
                     </p>
-                    <div className="mt-1.5 flex gap-3 text-xs">
+                    <div className="mt-2 flex items-center gap-4 text-xs">
                       <button type="button" onClick={() => startEdit(c)} className="font-medium text-cake-700">
                         {t('coupon.edit')}
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => void toggleActive(c)}
-                        className="font-medium text-gray-500"
-                      >
-                        {c.is_active ? t('coupon.inactive') : t('coupon.active')}
                       </button>
                       <button type="button" onClick={() => void remove(c)} className="font-medium text-cake-600">
                         {t('coupon.delete')}
                       </button>
                     </div>
+                  </div>
+                  {/* สวิตช์ เปิด/ปิด — ขอบขวาการ์ด ชัดเจน */}
+                  <div className="flex shrink-0 flex-col items-center gap-1">
+                    <Toggle checked={c.is_active} onChange={() => void toggleActive(c)} />
+                    <span
+                      className={`text-[11px] font-medium ${c.is_active ? 'text-cake-700' : 'text-gray-400'}`}
+                    >
+                      {c.is_active ? t('common.on') : t('common.off')}
+                    </span>
                   </div>
                 </li>
               ))}

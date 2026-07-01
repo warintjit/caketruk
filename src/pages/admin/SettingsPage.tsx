@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { supabase } from '@/lib/supabase'
+import Toggle from '@/components/Toggle'
 import type { Settings } from '@/types/database'
 
 type ToggleKey = 'show_promotions' | 'show_coupons' | 'show_packages'
@@ -136,26 +137,13 @@ export default function SettingsPage() {
       <div className="space-y-2">
         <p className="text-sm font-medium text-gray-700">{t('settings.toggles')}</p>
         {TOGGLES.map(({ key, label }) => (
-          <button
+          <div
             key={key}
-            type="button"
-            onClick={() => toggle(key)}
-            className="flex w-full items-center justify-between rounded-xl border border-gray-200 px-4 py-3 text-sm transition hover:bg-gray-50"
+            className="flex w-full items-center justify-between rounded-xl border border-gray-200 px-4 py-3 text-sm"
           >
             <span className="text-gray-700">{t(label)}</span>
-            <span
-              className={`relative h-6 w-11 rounded-full transition ${
-                settings[key] ? 'bg-cake-600' : 'bg-gray-300'
-              }`}
-              aria-hidden
-            >
-              <span
-                className={`absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition ${
-                  settings[key] ? 'left-[22px]' : 'left-0.5'
-                }`}
-              />
-            </span>
-          </button>
+            <Toggle checked={settings[key]} onChange={() => toggle(key)} />
+          </div>
         ))}
       </div>
 
