@@ -14,6 +14,7 @@ import ManagePointsPage from '@/pages/admin/ManagePointsPage'
 import MembersPage from '@/pages/admin/MembersPage'
 import SettingsPage from '@/pages/admin/SettingsPage'
 import PromotionsAdminPage from '@/pages/admin/PromotionsAdminPage'
+import MenuAdminPage from '@/pages/admin/MenuAdminPage'
 
 export default function App() {
   return (
@@ -43,6 +44,7 @@ export default function App() {
                 <Route path="admin/members" element={<MembersPage />} />
                 <Route path="admin/settings" element={<SettingsPage />} />
                 <Route path="admin/promotions" element={<PromotionsAdminPage />} />
+                <Route path="admin/menu" element={<MenuAdminPage />} />
               </Route>
             </Route>
           </Route>

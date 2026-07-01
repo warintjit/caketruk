@@ -92,6 +92,17 @@
     "roleAdmin": "แอดมิน",
     "roleMember": "สมาชิก"
   },
+  "menuMgr": {
+    "title": "จัดการเมนู",
+    "add": "เพิ่มรูปเมนู",
+    "uploading": "กำลังอัปโหลด...",
+    "sortOrder": "ลำดับ",
+    "delete": "ลบ",
+    "confirmDelete": "ลบรูปเมนูนี้?",
+    "empty": "ยังไม่มีรูปเมนู",
+    "loading": "กำลังโหลด...",
+    "memberEmpty": "ยังไม่มีเมนูตอนนี้"
+  },
   "promo": {
     "manageTitle": "จัดการโปรโมชัน",
     "add": "เพิ่มโปรโมชัน",

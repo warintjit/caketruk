@@ -92,6 +92,17 @@
     "roleAdmin": "Admin",
     "roleMember": "Member"
   },
+  "menuMgr": {
+    "title": "Manage menu",
+    "add": "Add menu image",
+    "uploading": "Uploading...",
+    "sortOrder": "Order",
+    "delete": "Delete",
+    "confirmDelete": "Delete this menu image?",
+    "empty": "No menu images yet",
+    "loading": "Loading...",
+    "memberEmpty": "No menu right now"
+  },
   "promo": {
     "manageTitle": "Manage promotions",
     "add": "Add promotion",

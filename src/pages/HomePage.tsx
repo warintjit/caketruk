@@ -35,6 +35,14 @@ export default function HomePage() {
       </Link>
 
       <Link
+        to="/menu"
+        className="flex items-center justify-between rounded-xl border border-gray-200 bg-white px-4 py-3 font-semibold text-gray-700 shadow-sm transition hover:bg-gray-50"
+      >
+        {t('nav.menu')}
+        <span aria-hidden>→</span>
+      </Link>
+
+      <Link
         to="/history"
         className="flex items-center justify-between rounded-xl border border-gray-200 bg-white px-4 py-3 font-semibold text-gray-700 shadow-sm transition hover:bg-gray-50"
       >
@@ -71,6 +79,17 @@ export default function HomePage() {
           className="flex items-center justify-between rounded-xl border border-cake-200 bg-white px-4 py-3 font-semibold text-cake-700 shadow-sm transition hover:bg-cake-50"
         >
           {t('promo.manageTitle')}
+          <span aria-hidden>→</span>
+        </Link>
+      )}
+
+      {/* จัดการเมนู — เฉพาะ developer/super_admin */}
+      {canManageAll(member) && (
+        <Link
+          to="/admin/menu"
+          className="flex items-center justify-between rounded-xl border border-cake-200 bg-white px-4 py-3 font-semibold text-cake-700 shadow-sm transition hover:bg-cake-50"
+        >
+          {t('menuMgr.title')}
           <span aria-hidden>→</span>
         </Link>
       )}
