@@ -6,6 +6,8 @@ import { canManagePoints, canManageAll } from '@/auth/roles'
 export default function HomePage() {
   const { t } = useTranslation()
   const { member, signOut } = useAuth()
+  const isAdmin = canManagePoints(member)
+  const isManager = canManageAll(member)
 
   return (
     <div className="space-y-4">
@@ -14,142 +16,94 @@ export default function HomePage() {
         <p className="text-sm text-cake-300">
           {t('home.hello')}, {member?.display_name ?? ''}
         </p>
-        <p className="mt-3 text-xs uppercase tracking-widest text-gray-400">
-          {t('home.points')}
-        </p>
+        <p className="mt-3 text-xs uppercase tracking-widest text-gray-400">{t('home.points')}</p>
         <p className="mt-1 text-4xl font-bold text-cake-500">
           {member?.points_balance ?? 0}{' '}
-          <span className="text-base font-normal text-gray-400">
-            {t('home.pointsUnit')}
-          </span>
+          <span className="text-base font-normal text-gray-400">{t('home.pointsUnit')}</span>
         </p>
       </div>
 
       {/* เมนูสมาชิก — ทุกคน */}
-      <Link
-        to="/promotions"
-        className="flex items-center justify-between rounded-xl border border-gray-200 bg-white px-4 py-3 font-semibold text-gray-700 shadow-sm transition hover:bg-gray-50"
-      >
-        {t('nav.promotions')}
-        <span aria-hidden>→</span>
-      </Link>
+      <SectionHeading>{t('home.memberMenu')}</SectionHeading>
+      <NavCard to="/promotions">{t('nav.promotions')}</NavCard>
+      <NavCard to="/menu">{t('nav.menu')}</NavCard>
+      <NavCard to="/coupons">{t('nav.coupons')}</NavCard>
+      <NavCard to="/packages">{t('nav.packages')}</NavCard>
+      <NavCard to="/history">{t('history.title')}</NavCard>
 
-      <Link
-        to="/menu"
-        className="flex items-center justify-between rounded-xl border border-gray-200 bg-white px-4 py-3 font-semibold text-gray-700 shadow-sm transition hover:bg-gray-50"
-      >
-        {t('nav.menu')}
-        <span aria-hidden>→</span>
-      </Link>
-
-      <Link
-        to="/coupons"
-        className="flex items-center justify-between rounded-xl border border-gray-200 bg-white px-4 py-3 font-semibold text-gray-700 shadow-sm transition hover:bg-gray-50"
-      >
-        {t('nav.coupons')}
-        <span aria-hidden>→</span>
-      </Link>
-
-      <Link
-        to="/packages"
-        className="flex items-center justify-between rounded-xl border border-gray-200 bg-white px-4 py-3 font-semibold text-gray-700 shadow-sm transition hover:bg-gray-50"
-      >
-        {t('nav.packages')}
-        <span aria-hidden>→</span>
-      </Link>
-
-      <Link
-        to="/history"
-        className="flex items-center justify-between rounded-xl border border-gray-200 bg-white px-4 py-3 font-semibold text-gray-700 shadow-sm transition hover:bg-gray-50"
-      >
-        {t('history.title')}
-        <span aria-hidden>→</span>
-      </Link>
-
-      {/* ทางลัดหลังบ้าน — เฉพาะแอดมิน */}
-      {canManagePoints(member) && (
-        <Link
-          to="/admin/points"
-          className="flex items-center justify-between rounded-xl bg-cake-600 px-4 py-3 font-semibold text-white shadow-md transition hover:bg-cake-700"
-        >
-          {t('nav.managePoints')}
-          <span aria-hidden>→</span>
-        </Link>
-      )}
-
-      {/* จัดการสมาชิก/role — เฉพาะ developer/super_admin */}
-      {canManageAll(member) && (
-        <Link
-          to="/admin/members"
-          className="flex items-center justify-between rounded-xl border border-cake-200 bg-white px-4 py-3 font-semibold text-cake-700 shadow-sm transition hover:bg-cake-50"
-        >
-          {t('members.title')}
-          <span aria-hidden>→</span>
-        </Link>
-      )}
-
-      {/* จัดการโปรโมชัน — เฉพาะ developer/super_admin */}
-      {canManageAll(member) && (
-        <Link
-          to="/admin/promotions"
-          className="flex items-center justify-between rounded-xl border border-cake-200 bg-white px-4 py-3 font-semibold text-cake-700 shadow-sm transition hover:bg-cake-50"
-        >
-          {t('promo.manageTitle')}
-          <span aria-hidden>→</span>
-        </Link>
-      )}
-
-      {/* จัดการเมนู — เฉพาะ developer/super_admin */}
-      {canManageAll(member) && (
-        <Link
-          to="/admin/menu"
-          className="flex items-center justify-between rounded-xl border border-cake-200 bg-white px-4 py-3 font-semibold text-cake-700 shadow-sm transition hover:bg-cake-50"
-        >
-          {t('menuMgr.title')}
-          <span aria-hidden>→</span>
-        </Link>
-      )}
-
-      {/* จัดการคูปอง — เฉพาะ developer/super_admin */}
-      {canManageAll(member) && (
-        <Link
-          to="/admin/coupons"
-          className="flex items-center justify-between rounded-xl border border-cake-200 bg-white px-4 py-3 font-semibold text-cake-700 shadow-sm transition hover:bg-cake-50"
-        >
-          {t('coupon.manageTitle')}
-          <span aria-hidden>→</span>
-        </Link>
-      )}
-
-      {/* จัดการแพคเกจ — เฉพาะ developer/super_admin */}
-      {canManageAll(member) && (
-        <Link
-          to="/admin/packages"
-          className="flex items-center justify-between rounded-xl border border-cake-200 bg-white px-4 py-3 font-semibold text-cake-700 shadow-sm transition hover:bg-cake-50"
-        >
-          {t('pkg.manageTitle')}
-          <span aria-hidden>→</span>
-        </Link>
-      )}
-
-      {/* ตั้งค่าร้าน — เฉพาะ developer/super_admin */}
-      {canManageAll(member) && (
-        <Link
-          to="/admin/settings"
-          className="flex items-center justify-between rounded-xl border border-cake-200 bg-white px-4 py-3 font-semibold text-cake-700 shadow-sm transition hover:bg-cake-50"
-        >
-          {t('settings.title')}
-          <span aria-hidden>→</span>
-        </Link>
+      {/* จัดการร้าน — แอดมิน */}
+      {isAdmin && (
+        <>
+          <SectionHeading>{t('home.adminMenu')}</SectionHeading>
+          <NavCard to="/admin/points" variant="primary">
+            {t('nav.managePoints')}
+          </NavCard>
+          {isManager && (
+            <>
+              <NavCard to="/admin/members" variant="admin">
+                {t('members.title')}
+              </NavCard>
+              <NavCard to="/admin/promotions" variant="admin">
+                {t('promo.manageTitle')}
+              </NavCard>
+              <NavCard to="/admin/menu" variant="admin">
+                {t('menuMgr.title')}
+              </NavCard>
+              <NavCard to="/admin/coupons" variant="admin">
+                {t('coupon.manageTitle')}
+              </NavCard>
+              <NavCard to="/admin/packages" variant="admin">
+                {t('pkg.manageTitle')}
+              </NavCard>
+              <NavCard to="/admin/settings" variant="admin">
+                {t('settings.title')}
+              </NavCard>
+            </>
+          )}
+        </>
       )}
 
       <button
         type="button"
         onClick={() => void signOut()}
-        className="w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm font-medium text-gray-600 transition hover:bg-gray-50"
+        className="mt-2 w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm font-medium text-gray-600 transition hover:bg-gray-50"
       >
         {t('nav.logout')}
       </button>
     </div>
+  )
+}
+
+function SectionHeading({ children }: { children: React.ReactNode }) {
+  return (
+    <p className="px-1 pt-2 text-xs font-semibold uppercase tracking-wider text-gray-400">
+      {children}
+    </p>
+  )
+}
+
+const VARIANTS = {
+  member: 'border border-gray-200 bg-white text-gray-700 shadow-sm hover:bg-gray-50',
+  admin: 'border border-cake-200 bg-white text-cake-700 shadow-sm hover:bg-cake-50',
+  primary: 'bg-cake-600 text-white shadow-md hover:bg-cake-700',
+} as const
+
+function NavCard({
+  to,
+  variant = 'member',
+  children,
+}: {
+  to: string
+  variant?: keyof typeof VARIANTS
+  children: React.ReactNode
+}) {
+  return (
+    <Link
+      to={to}
+      className={`flex items-center justify-between rounded-xl px-4 py-3 font-semibold transition ${VARIANTS[variant]}`}
+    >
+      {children}
+      <span aria-hidden>→</span>
+    </Link>
   )
 }

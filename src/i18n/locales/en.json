@@ -5,6 +5,7 @@
   },
   "nav": {
     "home": "Home",
+    "back": "Back",
     "promotions": "Promotions",
     "menu": "Menu",
     "coupons": "Coupons",
@@ -16,7 +17,9 @@
   "home": {
     "hello": "Hi",
     "points": "Points balance",
-    "pointsUnit": "pts"
+    "pointsUnit": "pts",
+    "memberMenu": "Member menu",
+    "adminMenu": "Store admin"
   },
   "history": {
     "title": "Points history",

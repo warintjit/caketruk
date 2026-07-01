@@ -5,6 +5,7 @@
   },
   "nav": {
     "home": "หน้าแรก",
+    "back": "ย้อนกลับ",
     "promotions": "โปรโมชัน",
     "menu": "เมนู",
     "coupons": "คูปอง",
@@ -16,7 +17,9 @@
   "home": {
     "hello": "สวัสดี",
     "points": "คะแนนสะสม",
-    "pointsUnit": "คะแนน"
+    "pointsUnit": "คะแนน",
+    "memberMenu": "เมนูสมาชิก",
+    "adminMenu": "จัดการร้าน"
   },
   "history": {
     "title": "ประวัติคะแนน",
