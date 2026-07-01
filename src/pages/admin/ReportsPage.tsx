@@ -16,10 +16,22 @@ type PromoRow = {
   is_active: boolean
 }
 type CouponRow = { name_th: string | null; name_en: string | null; count: number }
+type Redemption = {
+  id: string
+  points_used: number
+  resolved_at: string
+  member_name: string | null
+  member_last: string | null
+  member_phone: string | null
+  member_photo: string | null
+  promo_th: string | null
+  promo_en: string | null
+}
 type MonthReport = {
   promotions: PromoRow[]
   coupons_total: number
   coupons: CouponRow[]
+  redemptions: Redemption[]
   points: {
     earn_count: number
     adjust_count: number
@@ -52,6 +64,10 @@ export default function ReportsPage() {
   const [error, setError] = useState<string | null>(null)
 
   const n = (v: number) => v.toLocaleString()
+  const dtFmt = new Intl.DateTimeFormat(isTh ? 'th-TH' : 'en-GB', {
+    dateStyle: 'medium',
+    timeStyle: 'short',
+  })
 
   useEffect(() => {
     let active = true
@@ -119,6 +135,42 @@ export default function ReportsPage() {
               <Stat label={t('report.pointsAdded')} value={`+${n(month.points.points_added)}`} unit={t('report.points')} accent="green" />
               <Stat label={t('report.pointsRemoved')} value={n(month.points.points_removed)} unit={t('report.points')} accent="red" />
             </div>
+          </Section>
+
+          {/* การแลกโปรโมชัน (ยืนยันแล้ว) */}
+          <Section title={t('report.redemptions')}>
+            {month.redemptions.length === 0 ? (
+              <p className="text-sm text-gray-400">{t('report.none')}</p>
+            ) : (
+              <ul className="space-y-2">
+                {month.redemptions.map((r) => (
+                  <li
+                    key={r.id}
+                    className="flex items-center gap-3 rounded-xl border border-gray-100 bg-white p-3 shadow-sm"
+                  >
+                    {r.member_photo ? (
+                      <img src={r.member_photo} alt="" className="h-11 w-11 shrink-0 rounded-full object-cover" />
+                    ) : (
+                      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-cake-600 text-sm font-bold text-white">
+                        {(r.member_name ?? '?').charAt(0)}
+                      </div>
+                    )}
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate font-medium text-gray-800">
+                        {r.member_name ?? ''} {r.member_last ?? ''}
+                      </p>
+                      <p className="truncate text-xs text-gray-600">
+                        {(isTh ? r.promo_th : r.promo_en) || r.promo_th || r.promo_en || '—'}
+                      </p>
+                      <p className="text-[11px] text-gray-400">{dtFmt.format(new Date(r.resolved_at))}</p>
+                    </div>
+                    <span className="shrink-0 text-sm font-bold text-cake-600">
+                      −{r.points_used} {t('report.points')}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            )}
           </Section>
 
           {/* คูปองที่ใช้ */}
