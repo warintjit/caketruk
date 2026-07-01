@@ -9,6 +9,7 @@
     "menu": "เมนู",
     "packages": "แพคเกจพิเศษ",
     "history": "ประวัติการใช้",
+    "managePoints": "จัดการคะแนน",
     "logout": "ออกจากระบบ"
   },
   "home": {
@@ -34,6 +35,36 @@
     "saveProfile": "บันทึกข้อมูล",
     "errPhone": "กรุณากรอกเบอร์โทรให้ถูกต้อง",
     "errPhoneDup": "เบอร์โทรนี้ถูกใช้แล้ว"
+  },
+  "admin": {
+    "managePointsTitle": "จัดการคะแนน",
+    "managePointsHint": "ค้นหาสมาชิกด้วยเบอร์โทร แล้วเพิ่มหรือปรับคะแนน",
+    "searchPhone": "เบอร์โทรสมาชิก",
+    "searchBtn": "ค้นหา",
+    "searching": "กำลังค้นหา...",
+    "notFound": "ไม่พบสมาชิกที่มีเบอร์นี้",
+    "currentPoints": "คะแนนคงเหลือ",
+    "modeEarn": "เพิ่มจากยอดบิล",
+    "modeAdjust": "ปรับมือ",
+    "billAmount": "ยอดบิล (บาท)",
+    "billHint": "ทุก 300 บาท = 1 คะแนน (ปัดลง)",
+    "pointsPreview": "จะได้รับ",
+    "adjustPoints": "จำนวนคะแนน",
+    "adjustHint": "ใส่เครื่องหมายลบ (เช่น -5) เพื่อหักคะแนน",
+    "note": "หมายเหตุ (ถ้ามี)",
+    "submitEarn": "เพิ่มคะแนน",
+    "submitAdjust": "ปรับคะแนน",
+    "submitting": "กำลังบันทึก...",
+    "successTitle": "ทำรายการสำเร็จ",
+    "pointsChanged": "คะแนนที่เปลี่ยน",
+    "newBalance": "คะแนนคงเหลือใหม่",
+    "reset": "ทำรายการใหม่",
+    "recentTx": "รายการล่าสุดของสมาชิกนี้",
+    "noTx": "ยังไม่มีรายการ",
+    "typeEarn": "เพิ่มจากบิล",
+    "typeAdjust": "ปรับมือ",
+    "errBill": "กรอกยอดบิลให้ถูกต้อง",
+    "errPoints": "กรอกจำนวนคะแนน (ไม่เท่ากับ 0)"
   },
   "footer": {
     "credit": "dev by Kru_Boat"

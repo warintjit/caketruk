@@ -9,6 +9,7 @@
     "menu": "Menu",
     "packages": "Special Packages",
     "history": "History",
+    "managePoints": "Manage points",
     "logout": "Logout"
   },
   "home": {
@@ -34,6 +35,36 @@
     "saveProfile": "Save profile",
     "errPhone": "Please enter a valid phone number",
     "errPhoneDup": "This phone number is already in use"
+  },
+  "admin": {
+    "managePointsTitle": "Manage points",
+    "managePointsHint": "Search a member by phone, then add or adjust points",
+    "searchPhone": "Member phone number",
+    "searchBtn": "Search",
+    "searching": "Searching...",
+    "notFound": "No member found with this phone number",
+    "currentPoints": "Points balance",
+    "modeEarn": "From bill",
+    "modeAdjust": "Manual adjust",
+    "billAmount": "Bill amount (THB)",
+    "billHint": "Every 300 THB = 1 point (rounded down)",
+    "pointsPreview": "Will earn",
+    "adjustPoints": "Points",
+    "adjustHint": "Use a minus sign (e.g. -5) to deduct points",
+    "note": "Note (optional)",
+    "submitEarn": "Add points",
+    "submitAdjust": "Adjust points",
+    "submitting": "Saving...",
+    "successTitle": "Done",
+    "pointsChanged": "Points changed",
+    "newBalance": "New balance",
+    "reset": "New transaction",
+    "recentTx": "Recent transactions for this member",
+    "noTx": "No transactions yet",
+    "typeEarn": "From bill",
+    "typeAdjust": "Manual",
+    "errBill": "Enter a valid bill amount",
+    "errPoints": "Enter a non-zero number of points"
   },
   "footer": {
     "credit": "dev by Kru_Boat"
