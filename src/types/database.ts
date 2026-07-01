@@ -38,6 +38,7 @@ export interface Promotion {
   description_th: string | null
   description_en: string | null
   image_url: string | null
+  points_required: number | null
   is_active: boolean
   sort_order: number
   created_at: string
@@ -64,6 +65,7 @@ export interface Coupon {
   name_en: string | null
   image_url: string | null
   max_uses_per_user: number
+  is_birthday: boolean
   is_active: boolean
   sort_order: number
   created_at: string

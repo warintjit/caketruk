@@ -32,7 +32,10 @@
   "common": {
     "comingSoon": "Coming soon",
     "loading": "Loading...",
-    "language": "Language"
+    "language": "Language",
+    "on": "On",
+    "off": "Off",
+    "imageHint": "Landscape 4:3 recommended · auto-resized & compressed, upload straight from your phone"
   },
   "auth": {
     "loginWithGoogle": "Sign in with Google",
@@ -106,6 +109,9 @@
     "nameTh": "Coupon name (Thai)",
     "nameEn": "Coupon name (English)",
     "maxUses": "Uses per person / month",
+    "birthday": "Birthday coupon",
+    "birthdayHint": "Shown/usable only during each member's birth month",
+    "birthdayBadge": "🎂 Birthday",
     "sortOrder": "Sort order",
     "active": "Active",
     "save": "Save",
@@ -171,6 +177,8 @@
     "titleEn": "Title (English)",
     "descTh": "Description (Thai)",
     "descEn": "Description (English)",
+    "pointsRequired": "Points to redeem",
+    "usePoints": "Use {{points}} pts",
     "sortOrder": "Sort order",
     "active": "Active",
     "save": "Save",
