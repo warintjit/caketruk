@@ -21,6 +21,7 @@ import MenuAdminPage from '@/pages/admin/MenuAdminPage'
 import CouponsAdminPage from '@/pages/admin/CouponsAdminPage'
 import PackagesAdminPage from '@/pages/admin/PackagesAdminPage'
 import HomeTilesAdminPage from '@/pages/admin/HomeTilesAdminPage'
+import ReportsPage from '@/pages/admin/ReportsPage'
 
 export default function App() {
   return (
@@ -53,6 +54,7 @@ export default function App() {
                 <Route path="admin/members" element={<MembersPage />} />
                 <Route path="admin/settings" element={<SettingsPage />} />
                 <Route path="admin/home-tiles" element={<HomeTilesAdminPage />} />
+                <Route path="admin/reports" element={<ReportsPage />} />
                 <Route path="admin/promotions" element={<PromotionsAdminPage />} />
                 <Route path="admin/menu" element={<MenuAdminPage />} />
                 <Route path="admin/coupons" element={<CouponsAdminPage />} />
