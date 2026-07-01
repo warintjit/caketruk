@@ -87,6 +87,12 @@ export interface MenuImage {
   created_at: string
 }
 
+export interface HomeTile {
+  key: string
+  image_url: string | null
+  updated_at: string
+}
+
 export interface Settings {
   id: boolean
   google_map_url: string | null

@@ -21,6 +21,14 @@
     "memberMenu": "Member menu",
     "adminMenu": "Store admin"
   },
+  "profile": {
+    "id": "Member ID",
+    "edit": "Edit",
+    "editTitle": "Edit member info",
+    "birthdayLocked": "Birthday can't be changed (used for birthday coupons)",
+    "save": "Save",
+    "saving": "Saving..."
+  },
   "history": {
     "title": "Points history",
     "empty": "No point activity yet",
@@ -188,6 +196,13 @@
     "loading": "Loading...",
     "memberEmpty": "No promotions right now",
     "inactive": "Off"
+  },
+  "tiles": {
+    "title": "Home card images",
+    "hint": "Set an image for each home menu card (optional — falls back to a brand-color card)",
+    "uploading": "Uploading...",
+    "remove": "Remove image",
+    "loading": "Loading..."
   },
   "settings": {
     "title": "Store settings",

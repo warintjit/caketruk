@@ -10,6 +10,7 @@ import HomePage from '@/pages/HomePage'
 import PromotionsPage from '@/pages/PromotionsPage'
 import MenuPage from '@/pages/MenuPage'
 import HistoryPage from '@/pages/HistoryPage'
+import EditProfilePage from '@/pages/EditProfilePage'
 import CouponsPage from '@/pages/CouponsPage'
 import PackagesPage from '@/pages/PackagesPage'
 import ManagePointsPage from '@/pages/admin/ManagePointsPage'
@@ -19,6 +20,7 @@ import PromotionsAdminPage from '@/pages/admin/PromotionsAdminPage'
 import MenuAdminPage from '@/pages/admin/MenuAdminPage'
 import CouponsAdminPage from '@/pages/admin/CouponsAdminPage'
 import PackagesAdminPage from '@/pages/admin/PackagesAdminPage'
+import HomeTilesAdminPage from '@/pages/admin/HomeTilesAdminPage'
 
 export default function App() {
   return (
@@ -39,6 +41,7 @@ export default function App() {
               <Route path="coupons" element={<CouponsPage />} />
               <Route path="packages" element={<PackagesPage />} />
               <Route path="history" element={<HistoryPage />} />
+              <Route path="profile/edit" element={<EditProfilePage />} />
 
               {/* หลังบ้าน — เฉพาะ admin/developer/super_admin */}
               <Route element={<AdminRoute />}>
@@ -49,6 +52,7 @@ export default function App() {
               <Route element={<ManagerRoute />}>
                 <Route path="admin/members" element={<MembersPage />} />
                 <Route path="admin/settings" element={<SettingsPage />} />
+                <Route path="admin/home-tiles" element={<HomeTilesAdminPage />} />
                 <Route path="admin/promotions" element={<PromotionsAdminPage />} />
                 <Route path="admin/menu" element={<MenuAdminPage />} />
                 <Route path="admin/coupons" element={<CouponsAdminPage />} />
