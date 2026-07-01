@@ -19,7 +19,8 @@
     "points": "Points balance",
     "pointsUnit": "pts",
     "memberMenu": "Member menu",
-    "adminMenu": "Store admin"
+    "adminMenu": "Store admin",
+    "memberCount": "{{count}} members total"
   },
   "profile": {
     "id": "Member ID",

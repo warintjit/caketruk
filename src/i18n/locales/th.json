@@ -19,7 +19,8 @@
     "points": "คะแนนสะสม",
     "pointsUnit": "คะแนน",
     "memberMenu": "เมนูสมาชิก",
-    "adminMenu": "จัดการร้าน"
+    "adminMenu": "จัดการร้าน",
+    "memberCount": "สมาชิกทั้งหมด {{count}} คน"
   },
   "profile": {
     "id": "รหัสสมาชิก",

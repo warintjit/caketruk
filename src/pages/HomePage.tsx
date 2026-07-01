@@ -20,6 +20,7 @@ export default function HomePage() {
   const isManager = canManageAll(member)
 
   const [images, setImages] = useState<Record<string, string | null>>({})
+  const [memberCount, setMemberCount] = useState<number | null>(null)
 
   useEffect(() => {
     let active = true
@@ -34,6 +35,21 @@ export default function HomePage() {
       active = false
     }
   }, [])
+
+  // จำนวนสมาชิกทั้งหมด — เฉพาะแอดมิน (RLS ให้ admin เห็นสมาชิกทุกคน)
+  useEffect(() => {
+    if (!isAdmin) return
+    let active = true
+    void (async () => {
+      const { count } = await supabase
+        .from('members')
+        .select('*', { count: 'exact', head: true })
+      if (active) setMemberCount(count ?? 0)
+    })()
+    return () => {
+      active = false
+    }
+  }, [isAdmin])
 
   return (
     <div className="space-y-4">
@@ -78,12 +94,35 @@ export default function HomePage() {
               <span className="text-base font-normal text-gray-400">{t('home.pointsUnit')}</span>
             </p>
           </div>
-          <Link
-            to="/history"
-            className="flex items-center gap-1 text-xs font-medium text-cake-300 hover:text-cake-200"
-          >
-            {t('history.title')} <span aria-hidden>›</span>
-          </Link>
+          <div className="flex flex-col items-end gap-1">
+            {isAdmin && memberCount != null && (
+              <span
+                className="flex items-center gap-1 text-xs font-medium text-white"
+                title={t('home.memberCount', { count: memberCount })}
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="h-3.5 w-3.5"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <circle cx="12" cy="8" r="4" />
+                  <path d="M4 20c0-4 3.6-6 8-6s8 2 8 6" />
+                </svg>
+                {memberCount}
+              </span>
+            )}
+            <Link
+              to="/history"
+              className="flex items-center gap-1 text-xs font-medium text-cake-300 hover:text-cake-200"
+            >
+              {t('history.title')} <span aria-hidden>›</span>
+            </Link>
+          </div>
         </div>
       </div>
 
