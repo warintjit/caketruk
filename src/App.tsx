@@ -11,12 +11,14 @@ import PromotionsPage from '@/pages/PromotionsPage'
 import MenuPage from '@/pages/MenuPage'
 import HistoryPage from '@/pages/HistoryPage'
 import CouponsPage from '@/pages/CouponsPage'
+import PackagesPage from '@/pages/PackagesPage'
 import ManagePointsPage from '@/pages/admin/ManagePointsPage'
 import MembersPage from '@/pages/admin/MembersPage'
 import SettingsPage from '@/pages/admin/SettingsPage'
 import PromotionsAdminPage from '@/pages/admin/PromotionsAdminPage'
 import MenuAdminPage from '@/pages/admin/MenuAdminPage'
 import CouponsAdminPage from '@/pages/admin/CouponsAdminPage'
+import PackagesAdminPage from '@/pages/admin/PackagesAdminPage'
 
 export default function App() {
   return (
@@ -35,6 +37,7 @@ export default function App() {
               <Route path="promotions" element={<PromotionsPage />} />
               <Route path="menu" element={<MenuPage />} />
               <Route path="coupons" element={<CouponsPage />} />
+              <Route path="packages" element={<PackagesPage />} />
               <Route path="history" element={<HistoryPage />} />
 
               {/* หลังบ้าน — เฉพาะ admin/developer/super_admin */}
@@ -49,6 +52,7 @@ export default function App() {
                 <Route path="admin/promotions" element={<PromotionsAdminPage />} />
                 <Route path="admin/menu" element={<MenuAdminPage />} />
                 <Route path="admin/coupons" element={<CouponsAdminPage />} />
+                <Route path="admin/packages" element={<PackagesAdminPage />} />
               </Route>
             </Route>
           </Route>
