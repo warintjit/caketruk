@@ -12,5 +12,5 @@ insert into public.settings (id)
 
 -- settings ลับ + อีเมลเจ้าของร้าน
 insert into public.secure_settings (id, owner_email)
-  values (true, 'warintjit@gmail.com')   -- ⚠️ แก้ให้ตรงอีเมลเจ้าของร้านจริง
+  values (true, 'orawan062525@gmail.com')   -- ⚠️ แก้ให้ตรงอีเมลเจ้าของร้านจริง
   on conflict (id) do update set owner_email = excluded.owner_email;
