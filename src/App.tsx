@@ -9,6 +9,7 @@ import CompleteProfilePage from '@/pages/CompleteProfilePage'
 import HomePage from '@/pages/HomePage'
 import PromotionsPage from '@/pages/PromotionsPage'
 import MenuPage from '@/pages/MenuPage'
+import HistoryPage from '@/pages/HistoryPage'
 import ManagePointsPage from '@/pages/admin/ManagePointsPage'
 import MembersPage from '@/pages/admin/MembersPage'
 
@@ -28,6 +29,7 @@ export default function App() {
               <Route index element={<HomePage />} />
               <Route path="promotions" element={<PromotionsPage />} />
               <Route path="menu" element={<MenuPage />} />
+              <Route path="history" element={<HistoryPage />} />
 
               {/* หลังบ้าน — เฉพาะ admin/developer/super_admin */}
               <Route element={<AdminRoute />}>

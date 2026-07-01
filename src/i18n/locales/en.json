@@ -17,6 +17,14 @@
     "points": "Points balance",
     "pointsUnit": "pts"
   },
+  "history": {
+    "title": "Points history",
+    "empty": "No point activity yet",
+    "earn": "Earned from purchase",
+    "adjust": "Adjusted by admin",
+    "balance": "Balance",
+    "loading": "Loading..."
+  },
   "common": {
     "comingSoon": "Coming soon",
     "loading": "Loading...",

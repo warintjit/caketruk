@@ -25,6 +25,15 @@ export default function HomePage() {
         </p>
       </div>
 
+      {/* ประวัติคะแนน — สมาชิกทุกคน */}
+      <Link
+        to="/history"
+        className="flex items-center justify-between rounded-xl border border-gray-200 bg-white px-4 py-3 font-semibold text-gray-700 shadow-sm transition hover:bg-gray-50"
+      >
+        {t('history.title')}
+        <span aria-hidden>→</span>
+      </Link>
+
       {/* ทางลัดหลังบ้าน — เฉพาะแอดมิน */}
       {canManagePoints(member) && (
         <Link
