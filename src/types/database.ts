@@ -103,6 +103,7 @@ export interface MenuImage {
 export interface HomeTile {
   key: string
   image_url: string | null
+  enabled: boolean
   updated_at: string
 }
 

@@ -20,16 +20,22 @@ export default function HomePage() {
   const isManager = canManageAll(member)
 
   const [images, setImages] = useState<Record<string, string | null>>({})
+  const [enabled, setEnabled] = useState<Record<string, boolean>>({})
   const [memberCount, setMemberCount] = useState<number | null>(null)
 
   useEffect(() => {
     let active = true
     void (async () => {
-      const { data } = await supabase.from('home_tiles').select('key, image_url')
+      const { data } = await supabase.from('home_tiles').select('key, image_url, enabled')
       if (!active) return
-      const map: Record<string, string | null> = {}
-      for (const row of (data as HomeTile[]) ?? []) map[row.key] = row.image_url
-      setImages(map)
+      const imgs: Record<string, string | null> = {}
+      const en: Record<string, boolean> = {}
+      for (const row of (data as HomeTile[]) ?? []) {
+        imgs[row.key] = row.image_url
+        en[row.key] = row.enabled
+      }
+      setImages(imgs)
+      setEnabled(en)
     })()
     return () => {
       active = false
@@ -126,9 +132,9 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* เมนูสมาชิก — การ์ดรูปภาพ */}
+      {/* เมนูสมาชิก — การ์ดรูปภาพ (เฉพาะที่เปิดไว้) */}
       <div className="grid grid-cols-2 gap-3">
-        {MEMBER_TILES.map((tile) => (
+        {MEMBER_TILES.filter((tile) => enabled[tile.key] !== false).map((tile) => (
           <TileCard
             key={tile.key}
             to={tile.to}

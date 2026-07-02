@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { supabase } from '@/lib/supabase'
 import { uploadImage, deleteImage } from '@/lib/storage'
+import Toggle from '@/components/Toggle'
 import type { HomeTile } from '@/types/database'
 
 /** ป้ายชื่อของแต่ละการ์ด (ใช้คีย์ i18n เดิม) */
@@ -69,6 +70,13 @@ export default function HomeTilesAdminPage() {
     await reload()
   }
 
+  async function toggleEnabled(tile: HomeTile) {
+    setTiles((list) =>
+      list.map((x) => (x.key === tile.key ? { ...x, enabled: !x.enabled } : x)),
+    )
+    await supabase.from('home_tiles').update({ enabled: !tile.enabled }).eq('key', tile.key)
+  }
+
   return (
     <div className="space-y-4">
       <div>
@@ -119,6 +127,15 @@ export default function HomeTilesAdminPage() {
                       </button>
                     )}
                   </div>
+                </div>
+                {/* toggle เปิด/ปิด การ์ดนี้บนหน้าแรกลูกค้า */}
+                <div className="flex shrink-0 flex-col items-center gap-1">
+                  <Toggle checked={tile.enabled} onChange={() => void toggleEnabled(tile)} />
+                  <span
+                    className={`text-[11px] font-medium ${tile.enabled ? 'text-cake-700' : 'text-gray-400'}`}
+                  >
+                    {tile.enabled ? t('common.on') : t('common.off')}
+                  </span>
                 </div>
               </div>
             </li>

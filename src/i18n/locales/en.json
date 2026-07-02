@@ -245,8 +245,8 @@
     "times": ""
   },
   "tiles": {
-    "title": "Home card images",
-    "hint": "Set an image for each home menu card (optional — falls back to a brand-color card)",
+    "title": "Customer menu",
+    "hint": "Set image + show/hide each customer home menu card (no image = brand-color card)",
     "uploading": "Uploading...",
     "remove": "Remove image",
     "loading": "Loading..."
