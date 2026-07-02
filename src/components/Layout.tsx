@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import Footer from './Footer'
 import LanguageSwitcher from './LanguageSwitcher'
 import Logo from './Logo'
+import RolePreview from './RolePreview'
 
 /** โครงหน้าหลัก (mobile-first): header แบรนด์ดำ + เนื้อหา + footer */
 export default function Layout() {
@@ -39,6 +40,8 @@ export default function Layout() {
         </div>
         <LanguageSwitcher />
       </header>
+
+      <RolePreview />
 
       <main className="flex-1 px-4 py-5">
         <Outlet />

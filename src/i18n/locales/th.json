@@ -292,6 +292,10 @@
     "loading": "กำลังโหลด...",
     "errUrl": "ลิงก์ต้องขึ้นต้นด้วย http:// หรือ https://"
   },
+  "preview": {
+    "label": "ดูมุมมอง",
+    "mine": "ของฉัน"
+  },
   "footer": {
     "credit": "dev by Kru_Boat"
   }

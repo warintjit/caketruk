@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { Session } from '@supabase/supabase-js'
 import { supabase } from '@/lib/supabase'
-import type { Member } from '@/types/database'
+import type { Member, MemberRole } from '@/types/database'
 import { AuthContext, isProfileComplete, type AuthState } from './context'
 
 /** หา member จาก auth_id — ถ้ายังไม่มีให้สร้างแถวใหม่ (ครั้งแรกที่ล็อกอิน) */
@@ -54,6 +54,7 @@ async function loadOrCreateMember(session: Session): Promise<Member | null> {
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [session, setSession] = useState<Session | null>(null)
   const [member, setMember] = useState<Member | null>(null)
+  const [previewRole, setPreviewRole] = useState<MemberRole | null>(null)
   const [loading, setLoading] = useState(true)
   const initialized = useRef(false)
   const syncingFor = useRef<string | null>(null)
@@ -105,19 +106,31 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const signOut = useCallback(async () => {
     await supabase.auth.signOut()
     setMember(null)
+    setPreviewRole(null)
   }, [])
+
+  // preview ได้เฉพาะ super_admin จริงเท่านั้น
+  const realRole = member?.role ?? null
+  const effectiveMember = useMemo<Member | null>(() => {
+    if (!member) return null
+    if (previewRole && realRole === 'super_admin') return { ...member, role: previewRole }
+    return member
+  }, [member, previewRole, realRole])
 
   const value = useMemo<AuthState>(
     () => ({
       session,
-      member,
+      member: effectiveMember,
       loading,
       profileComplete: isProfileComplete(member),
+      realRole,
+      previewRole: realRole === 'super_admin' ? previewRole : null,
+      setPreviewRole,
       signInWithGoogle,
       signOut,
       refreshMember,
     }),
-    [session, member, loading, signInWithGoogle, signOut, refreshMember],
+    [session, effectiveMember, member, realRole, previewRole, loading, signInWithGoogle, signOut, refreshMember],
   )
 
   return <AuthContext value={value}>{children}</AuthContext>
