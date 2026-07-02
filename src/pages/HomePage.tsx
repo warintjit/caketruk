@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { useAuth } from '@/auth/context'
 import { canManagePoints, canManageAll } from '@/auth/roles'
 import { supabase } from '@/lib/supabase'
-import type { HomeTile } from '@/types/database'
+import type { HomeTile, StampCard } from '@/types/database'
 
 const MEMBER_TILES = [
   { key: 'promotions', to: '/promotions', label: 'nav.promotions' },
@@ -22,6 +22,7 @@ export default function HomePage() {
   const [images, setImages] = useState<Record<string, string | null>>({})
   const [enabled, setEnabled] = useState<Record<string, boolean>>({})
   const [memberCount, setMemberCount] = useState<number | null>(null)
+  const [stamp, setStamp] = useState<StampCard | null>(null)
 
   useEffect(() => {
     let active = true
@@ -41,6 +42,23 @@ export default function HomePage() {
       active = false
     }
   }, [])
+
+  // บัตรชานมไข่มุกของตัวเอง
+  useEffect(() => {
+    if (!member) return
+    let active = true
+    void (async () => {
+      const { data } = await supabase
+        .from('stamp_cards')
+        .select('*')
+        .eq('member_id', member.id)
+        .maybeSingle()
+      if (active) setStamp((data as StampCard) ?? null)
+    })()
+    return () => {
+      active = false
+    }
+  }, [member])
 
   // จำนวนสมาชิกทั้งหมด — เฉพาะแอดมิน (RLS ให้ admin เห็นสมาชิกทุกคน)
   useEffect(() => {
@@ -83,6 +101,13 @@ export default function HomePage() {
                 {t('profile.id')}: {member.id.slice(0, 8).toUpperCase()}
               </p>
             )}
+            {/* 🧋 แก้วที่สะสม — กดดูบัตรสะสม */}
+            <Link
+              to="/stamps"
+              className="mt-1 inline-flex items-center gap-1 rounded-full bg-white/10 px-2 py-0.5 text-[11px] font-medium text-cake-300 transition hover:bg-white/20"
+            >
+              🧋 {stamp?.count ?? 0} {t('stamp.cups')}
+            </Link>
           </div>
           <Link
             to="/profile/edit"
@@ -153,6 +178,9 @@ export default function HomePage() {
           </NavCard>
           <NavCard to="/admin/promotion-claims" variant="admin">
             {t('claim.adminTitle')}
+          </NavCard>
+          <NavCard to="/admin/stamps" variant="admin">
+            {t('stamp.adminTitle')}
           </NavCard>
           {isManager && (
             <>

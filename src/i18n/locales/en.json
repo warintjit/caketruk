@@ -161,6 +161,26 @@
     "empty": "No pending claims",
     "points": "pts"
   },
+  "stamp": {
+    "title": "Bubble milk tea",
+    "adminTitle": "Bubble tea card",
+    "hint": "Buy 10, get 1 free",
+    "searchPhone": "Member phone number",
+    "search": "Search",
+    "searching": "Searching...",
+    "notFound": "No member found with this phone",
+    "cups": "cups",
+    "addCup": "+1 cup",
+    "useFree": "Use 1 free cup",
+    "saving": "Saving...",
+    "freeReady": "🎉 {{count}} free cup(s) available",
+    "toNextFree": "{{n}} more cup(s) for a free one",
+    "loading": "Loading...",
+    "cardTitle": "Bubble tea stamp card",
+    "tagline": "Every cup, made with love",
+    "rule1": "1 cup = 1 stamp",
+    "rule2": "Collect 10 to get 1 free"
+  },
   "menuMgr": {
     "title": "Manage menu",
     "add": "Add menu image",

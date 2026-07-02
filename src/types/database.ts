@@ -108,6 +108,15 @@ export interface HomeTile {
   updated_at: string
 }
 
+export interface StampCard {
+  member_id: string
+  count: number
+  free_available: number
+  total_earned: number
+  total_redeemed: number
+  updated_at: string
+}
+
 export interface Settings {
   id: boolean
   google_map_url: string | null

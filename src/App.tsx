@@ -14,6 +14,7 @@ import HistoryPage from '@/pages/HistoryPage'
 import EditProfilePage from '@/pages/EditProfilePage'
 import CouponsPage from '@/pages/CouponsPage'
 import PackagesPage from '@/pages/PackagesPage'
+import StampCardPage from '@/pages/StampCardPage'
 import ManagePointsPage from '@/pages/admin/ManagePointsPage'
 import MembersPage from '@/pages/admin/MembersPage'
 import SettingsPage from '@/pages/admin/SettingsPage'
@@ -24,6 +25,7 @@ import PackagesAdminPage from '@/pages/admin/PackagesAdminPage'
 import HomeTilesAdminPage from '@/pages/admin/HomeTilesAdminPage'
 import ReportsPage from '@/pages/admin/ReportsPage'
 import PromotionClaimsPage from '@/pages/admin/PromotionClaimsPage'
+import StampAdminPage from '@/pages/admin/StampAdminPage'
 
 export default function App() {
   return (
@@ -45,12 +47,14 @@ export default function App() {
               <Route path="coupons" element={<CouponsPage />} />
               <Route path="packages" element={<PackagesPage />} />
               <Route path="history" element={<HistoryPage />} />
+              <Route path="stamps" element={<StampCardPage />} />
               <Route path="profile/edit" element={<EditProfilePage />} />
 
               {/* หลังบ้าน — เฉพาะ admin/developer/super_admin */}
               <Route element={<AdminRoute />}>
                 <Route path="admin/points" element={<ManagePointsPage />} />
                 <Route path="admin/promotion-claims" element={<PromotionClaimsPage />} />
+                <Route path="admin/stamps" element={<StampAdminPage />} />
               </Route>
 
               {/* จัดการระดับสูง — เฉพาะ developer/super_admin */}
