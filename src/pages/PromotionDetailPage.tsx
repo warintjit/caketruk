@@ -54,10 +54,14 @@ export default function PromotionDetailPage() {
     promo.description_th ||
     promo.description_en
   const today = thaiToday()
+  // วันเกิดวันนี้ไหม (เทียบ วัน-เดือน ไม่สนปี)
+  const bdayToday = member?.birthday ? member.birthday.slice(5) === today.slice(5) : false
+  const hasPoints = promo.points_required != null
   const notStarted = promo.start_date != null && today < promo.start_date
   const expired = promo.end_date != null && today > promo.end_date
-  const claimable = promo.points_required != null
-  const notEnough = claimable && (member?.points_balance ?? 0) < (promo.points_required ?? 0)
+  const notEnough = hasPoints && (member?.points_balance ?? 0) < (promo.points_required ?? 0)
+  // โปรฯวันเกิด: กดได้เฉพาะวันเกิด · โปรฯปกติ: ต้องมีคะแนนแลก
+  const claimable = promo.is_birthday ? bdayToday : hasPoints
 
   async function claim() {
     if (!promo) return
@@ -88,11 +92,15 @@ export default function PromotionDetailPage() {
         />
       )}
 
-      {claimable && (
+      {hasPoints ? (
         <div className="rounded-xl bg-cake-600 py-3 text-center text-lg font-bold text-white shadow">
           {t('promo.usePoints', { points: promo.points_required })}
         </div>
-      )}
+      ) : promo.is_birthday ? (
+        <div className="rounded-xl bg-cake-600 py-3 text-center text-lg font-bold text-white shadow">
+          {t('promo.birthdayBadge')} · {t('claim.free')}
+        </div>
+      ) : null}
 
       {(promo.start_date || promo.end_date) && (
         <div className="rounded-xl bg-cake-50 p-3 text-sm text-gray-600">
@@ -106,7 +114,11 @@ export default function PromotionDetailPage() {
 
       {error && <p className="text-sm text-cake-600">{error}</p>}
 
-      {claimable && (
+      {promo.is_birthday && !bdayToday ? (
+        <div className="rounded-xl border border-cake-200 bg-cake-50 p-4 text-center text-sm font-medium text-cake-700">
+          {t('claim.birthdayOnly')}
+        </div>
+      ) : claimable ? (
         <div className="pt-2">
           {claimed ? (
             <div className="rounded-xl border border-green-200 bg-green-50 p-4 text-center text-sm font-medium text-green-700">
@@ -123,7 +135,7 @@ export default function PromotionDetailPage() {
             </button>
           )}
         </div>
-      )}
+      ) : null}
     </div>
   )
 }

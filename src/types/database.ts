@@ -41,6 +41,7 @@ export interface Promotion {
   points_required: number | null
   start_date: string | null
   end_date: string | null
+  is_birthday: boolean
   is_active: boolean
   sort_order: number
   created_at: string

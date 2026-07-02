@@ -14,6 +14,7 @@ type Draft = {
   points_required: string
   start_date: string
   end_date: string
+  is_birthday: boolean
   image_url: string | null
   sort_order: number
   is_active: boolean
@@ -28,6 +29,7 @@ const emptyDraft: Draft = {
   points_required: '',
   start_date: '',
   end_date: '',
+  is_birthday: false,
   image_url: null,
   sort_order: 0,
   is_active: true,
@@ -75,6 +77,7 @@ export default function PromotionsAdminPage() {
       points_required: p.points_required != null ? String(p.points_required) : '',
       start_date: p.start_date ?? '',
       end_date: p.end_date ?? '',
+      is_birthday: p.is_birthday,
       image_url: p.image_url,
       sort_order: p.sort_order,
       is_active: p.is_active,
@@ -117,6 +120,7 @@ export default function PromotionsAdminPage() {
       points_required: draft.points_required.trim() === '' ? null : Number(draft.points_required),
       start_date: draft.start_date || null,
       end_date: draft.end_date || null,
+      is_birthday: draft.is_birthday,
       image_url: draft.image_url,
       sort_order: draft.sort_order,
       is_active: draft.is_active,
@@ -266,6 +270,19 @@ export default function PromotionsAdminPage() {
             </label>
           </div>
 
+          <label className="flex items-start gap-2 rounded-lg bg-cake-50 p-3 text-sm text-gray-700">
+            <input
+              type="checkbox"
+              checked={draft.is_birthday}
+              onChange={(e) => setDraft({ ...draft, is_birthday: e.target.checked })}
+              className="mt-0.5 h-4 w-4 accent-cake-600"
+            />
+            <span>
+              <span className="font-medium">{t('promo.birthday')}</span>
+              <span className="mt-0.5 block text-xs text-gray-500">{t('promo.birthdayHint')}</span>
+            </span>
+          </label>
+
           {error && <p className="text-sm text-cake-600">{error}</p>}
 
           <div className="flex gap-2">
@@ -312,6 +329,9 @@ export default function PromotionsAdminPage() {
                   <div className="min-w-0 flex-1">
                     <p className="truncate font-medium text-gray-800">
                       {p.title_th || p.title_en || '—'}
+                      {p.is_birthday && (
+                        <span className="ml-1 text-cake-600">{t('promo.birthdayBadge')}</span>
+                      )}
                       {p.points_required != null && (
                         <span className="text-cake-600">
                           {' '}
